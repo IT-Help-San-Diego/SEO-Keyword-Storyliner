@@ -1,18 +1,17 @@
-import { sql } from "drizzle-orm";
-import { pgTable, text, varchar } from "drizzle-orm/pg-core";
-import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
-export const users = pgTable("users", {
-  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
-  username: text("username").notNull().unique(),
-  password: text("password").notNull(),
+export const brandStorySchema = z.object({
+  id: z.string(),
+  keywords: z.array(z.string()).length(8),
+  story: z.string().max(160),
+  matchedCount: z.number().min(0).max(8),
+  createdAt: z.string(),
 });
 
-export const insertUserSchema = createInsertSchema(users).pick({
-  username: true,
-  password: true,
+export const insertBrandStorySchema = z.object({
+  keywords: z.array(z.string()).length(8),
+  story: z.string().min(1, "Story is required").max(160, "Story must be 160 characters or less"),
 });
 
-export type InsertUser = z.infer<typeof insertUserSchema>;
-export type User = typeof users.$inferSelect;
+export type BrandStory = z.infer<typeof brandStorySchema>;
+export type InsertBrandStory = z.infer<typeof insertBrandStorySchema>;
