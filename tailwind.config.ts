@@ -81,6 +81,15 @@ export default {
           busy: "rgb(239 68 68)",
           offline: "rgb(156 163 175)",
         },
+        success: {
+          DEFAULT: "hsl(var(--success) / <alpha-value>)",
+          foreground: "hsl(var(--success-foreground) / <alpha-value>)",
+          highlight: "hsl(var(--success-highlight) / <alpha-value>)",
+        },
+        warning: {
+          DEFAULT: "hsl(var(--warning) / <alpha-value>)",
+          foreground: "hsl(var(--warning-foreground) / <alpha-value>)",
+        },
       },
       fontFamily: {
         sans: ["var(--font-sans)"],
@@ -96,10 +105,43 @@ export default {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: "0" },
         },
+        "unicorn-dance": {
+          "0%, 100%": { transform: "translateY(0) rotate(-5deg)" },
+          "25%": { transform: "translateY(-15px) rotate(5deg)" },
+          "50%": { transform: "translateY(-5px) rotate(-5deg)" },
+          "75%": { transform: "translateY(-20px) rotate(5deg)" },
+        },
+        "unicorn-float": {
+          "0%, 100%": { transform: "translateY(0) scale(1)" },
+          "50%": { transform: "translateY(-10px) scale(1.05)" },
+        },
+        "sparkle": {
+          "0%, 100%": { opacity: "1", transform: "scale(1)" },
+          "50%": { opacity: "0.5", transform: "scale(0.8)" },
+        },
+        "rainbow-shift": {
+          "0%": { backgroundPosition: "0% 50%" },
+          "50%": { backgroundPosition: "100% 50%" },
+          "100%": { backgroundPosition: "0% 50%" },
+        },
+        "pulse-glow": {
+          "0%, 100%": { boxShadow: "0 0 20px hsl(160 84% 39% / 0.4)" },
+          "50%": { boxShadow: "0 0 40px hsl(160 67% 52% / 0.6)" },
+        },
+        "confetti-fall": {
+          "0%": { transform: "translateY(-100%) rotate(0deg)", opacity: "1" },
+          "100%": { transform: "translateY(100vh) rotate(720deg)", opacity: "0" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        "unicorn-dance": "unicorn-dance 1.5s ease-in-out infinite",
+        "unicorn-float": "unicorn-float 2s ease-in-out infinite",
+        "sparkle": "sparkle 1s ease-in-out infinite",
+        "rainbow-shift": "rainbow-shift 3s ease-in-out infinite",
+        "pulse-glow": "pulse-glow 2s ease-in-out infinite",
+        "confetti-fall": "confetti-fall 3s linear infinite",
       },
     },
   },
