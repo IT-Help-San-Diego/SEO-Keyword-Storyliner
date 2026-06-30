@@ -23,7 +23,7 @@ const rateBuckets = new Map<string, { count: number; reset: number }>();
 function rateLimited(key: string, limit: number, windowMs: number): boolean {
   const now = Date.now();
   if (rateBuckets.size > 5000) {
-    for (const [k, v] of rateBuckets) if (now > v.reset) rateBuckets.delete(k);
+    for (const [k, v] of Array.from(rateBuckets)) if (now > v.reset) rateBuckets.delete(k);
   }
   const bucket = rateBuckets.get(key);
   if (!bucket || now > bucket.reset) {

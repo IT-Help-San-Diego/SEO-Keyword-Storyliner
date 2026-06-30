@@ -88,7 +88,7 @@ function extractStoryKeywords(text: string, existing: string[]): string[] {
   const words = text.toLowerCase().match(/[a-z][a-z'’-]{3,}/g) || [];
   const freq = new Map<string, number>();
   for (const w of words) if (!STOPWORDS.has(w)) freq.set(w, (freq.get(w) || 0) + 1);
-  [...freq.entries()]
+  Array.from(freq.entries())
     .sort((a, b) => b[1] - a[1] || b[0].length - a[0].length)
     .forEach(([w]) => add(w));
   return out.slice(0, 10);
@@ -606,7 +606,6 @@ export default function Home() {
               data-testid="img-aristotle"
               width={800}
               height={800}
-              fetchpriority="high"
               decoding="async"
               className="w-full max-w-md mx-auto rounded-xl border border-border/60 shadow-2xl"
             />
