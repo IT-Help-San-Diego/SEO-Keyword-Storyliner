@@ -572,7 +572,8 @@ export default function Home() {
             <p className="mt-6 text-base sm:text-lg leading-relaxed text-muted-foreground max-w-xl">
               This is the part almost everyone skips. A real brand begins with a single,
               deliberate statement — who you are, what you believe, and the exact words a
-              stranger would type to find you. We build it the way a Disney writers' room
+              stranger would type to find you: the keywords that surface you in search and the
+              hashtags that surface you on social. We build it the way a Disney writers' room
               engineers a film — a hook, a turn, a payoff — using{" "}
               <span className="text-foreground font-medium">2,500 years of logic</span> from
               Aristotle, compressed into 160 characters.
@@ -580,7 +581,7 @@ export default function Home() {
             <div className="mt-7 flex flex-wrap items-center gap-x-6 gap-y-2 font-mono text-[11px] uppercase tracking-[0.16em] text-muted-foreground">
               <span>160 characters</span>
               <span className="text-border">/</span>
-              <span>8 keywords</span>
+              <span>8 keywords &amp; hashtags</span>
               <span className="text-border">/</span>
               <span>ethos · pathos · logos</span>
             </div>
@@ -635,6 +636,11 @@ export default function Home() {
               <h2 className="font-display text-2xl sm:text-3xl font-bold mt-4 text-foreground">
                 The keywords are the frame. The story is the window.
               </h2>
+              <p className="mt-3 text-sm leading-relaxed text-muted-foreground max-w-lg">
+                Same words, two homes — your keywords in a search bar, your hashtags on social.
+                The <span className="text-foreground font-medium">#</span> that makes you
+                findable everywhere.
+              </p>
             </div>
             <Button
               data-testid="button-load-example"
