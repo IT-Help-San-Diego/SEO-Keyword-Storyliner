@@ -34,7 +34,7 @@ import { analyzeStory } from "@/lib/story-coach";
 import { useToast } from "@/hooks/use-toast";
 import { apiRequest } from "@/lib/queryClient";
 import { loadDraft, saveDraft, clearDraft } from "@/lib/draft-storage";
-import aristotleImg from "@assets/generated_images/aristotle_engraving.png";
+import aristotleImg from "@assets/generated_images/aristotle_engraving.webp";
 
 const MAX_STORY_LENGTH = 160;
 const REQUIRED_KEYWORDS = 4;
@@ -603,6 +603,10 @@ export default function Home() {
               src={aristotleImg}
               alt="An engraving of Aristotle framed by the golden ratio"
               data-testid="img-aristotle"
+              width={800}
+              height={800}
+              fetchpriority="high"
+              decoding="async"
               className="w-full max-w-md mx-auto rounded-xl border border-border/60 shadow-2xl"
             />
             <p className="mt-3 text-center font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
@@ -1079,6 +1083,10 @@ export default function Home() {
             <img
               src={aristotleImg}
               alt="Engraving of Aristotle"
+              width={800}
+              height={800}
+              loading="lazy"
+              decoding="async"
               className="w-full max-w-xs mx-auto rounded-xl border border-border/60 shadow-xl opacity-95"
             />
           </div>
