@@ -575,7 +575,7 @@ export default function Home() {
               stranger would type to find you: the keywords that surface you in search and the
               hashtags that can improve discovery on social. We build it the way a Disney writers' room
               engineers a film — a hook, a turn, a payoff — using{" "}
-              <span className="text-foreground font-medium">2,500 years of logic</span> from
+              <span className="text-foreground font-medium">nearly 2,400 years of logic</span> from
               Aristotle, compressed into 160 characters.
             </p>
             <div className="mt-7 flex flex-wrap items-center gap-x-6 gap-y-2 font-mono text-[11px] uppercase tracking-[0.16em] text-muted-foreground">
@@ -1109,7 +1109,7 @@ export default function Home() {
             />
           </div>
           <div className="order-1 lg:order-none">
-            <Eyebrow>The method · 2,500 years of logic</Eyebrow>
+            <Eyebrow>The method · nearly 2,400 years of logic</Eyebrow>
             <h2 className="font-display text-2xl sm:text-3xl font-bold mt-4 text-foreground">
               Disney didn't invent this. They borrowed it.
             </h2>
