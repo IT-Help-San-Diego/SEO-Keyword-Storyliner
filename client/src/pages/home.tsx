@@ -545,7 +545,7 @@ export default function Home() {
             </span>
           </div>
           <a
-            href="https://intellectualresistance.com"
+            href="https://www.intellectualresistance.com"
             target="_blank"
             rel="noopener noreferrer"
             data-testid="link-intellectual-resistance"
@@ -1124,7 +1124,7 @@ export default function Home() {
             data-testid="lineage-intellectual-resistance"
           >
             <a
-              href="https://intellectualresistance.com"
+              href="https://www.intellectualresistance.com"
               target="_blank"
               rel="noopener noreferrer"
               data-testid="link-lineage-parent"
