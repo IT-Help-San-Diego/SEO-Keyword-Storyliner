@@ -21,9 +21,9 @@ The user explicitly does NOT want a paid/managed AI dependency (declined Replit-
 
 The configured Google/Gemini key returns **429 "Your prepayment credits are depleted"**, so live AI rewrites fail. By user decision, the UI presents AI rewrite as **"Coming soon"** rather than a dead button — all AI code is left intact.
 - `story-coach-panel.tsx`: a "Coming soon" badge, the rewrite button is hard-disabled (`disabled`) and labeled "Coming soon", description says it's not available yet.
-- `home.tsx` header badge reads "Free coach · AI soon" (muted) instead of green "AI coach · on", so the header doesn't claim AI is working.
 - **Why:** end-users never supply their own key (it's a server-side secret going to the owner's Gemini endpoint); a visible-but-broken button is worse than an honest "soon".
-- **To re-enable when the key is funded:** remove the `disabled`/"Coming soon" badge in `story-coach-panel.tsx` and restore the live header badge logic in `home.tsx`. No backend change needed — the route/endpoint already work.
+- **To re-enable when the key is funded:** remove the `disabled`/"Coming soon" badge in `story-coach-panel.tsx`. No backend change needed — the route/endpoint already work.
+- **The header no longer shows AI status or "free coach" at all** — the user found pricing/AI-status language cheapening for that prime top-strip space. See the brand-intellectual-resistance memory.
 
 # Guardrails on the proxy/AI routes
 

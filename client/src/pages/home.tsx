@@ -26,6 +26,7 @@ import {
   Sparkles,
   Wand2,
   Download,
+  ArrowUpRight,
 } from "lucide-react";
 import { DancingUnicorns } from "@/components/dancing-unicorns";
 import { StoryCoachPanel } from "@/components/story-coach-panel";
@@ -543,13 +544,16 @@ export default function Home() {
               the foundation
             </span>
           </div>
-          <Badge
-            variant="outline"
-            data-testid="badge-ai-status"
-            className="font-mono text-[10px] uppercase tracking-[0.15em] text-muted-foreground"
+          <a
+            href="https://intellectualresistance.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            data-testid="link-intellectual-resistance"
+            className="group flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-[0.15em] text-muted-foreground transition-colors hover:text-primary"
           >
-            {aiEnabled ? "Free coach · AI soon" : "Free coach"}
-          </Badge>
+            <span className="hidden sm:inline">A project of</span> intellectual resistance
+            <ArrowUpRight className="w-3 h-3 opacity-50 transition-opacity group-hover:opacity-100" />
+          </a>
         </div>
       </div>
 
@@ -1113,6 +1117,27 @@ export default function Home() {
           <p className="mt-2 text-xs text-muted-foreground/70">
             The foundation you build before everything else.
           </p>
+
+          {/* Lineage — a quiet echo of the Intellectual Resistance corporate tree */}
+          <div
+            className="mt-8 flex flex-col items-center"
+            data-testid="lineage-intellectual-resistance"
+          >
+            <a
+              href="https://intellectualresistance.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              data-testid="link-lineage-parent"
+              className="inline-flex items-center gap-1.5 rounded-md border border-border/60 bg-muted/30 px-2.5 py-1 font-mono text-[10px] uppercase tracking-[0.14em] text-muted-foreground transition-colors hover:border-primary/40 hover:text-foreground"
+            >
+              Intellectual Resistance
+              <ArrowUpRight className="w-2.5 h-2.5 opacity-50" />
+            </a>
+            <span className="my-1.5 h-4 w-px bg-primary/20" aria-hidden="true" />
+            <span className="inline-flex items-center rounded-md border border-primary/30 bg-primary/5 px-2.5 py-1 font-mono text-[10px] font-semibold uppercase tracking-[0.14em] text-primary">
+              Storyliner
+            </span>
+          </div>
         </footer>
       </div>
     </div>
