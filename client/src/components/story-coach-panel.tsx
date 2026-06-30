@@ -3,7 +3,6 @@ import { useMutation } from "@tanstack/react-query";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import {
   BookOpen,
   Check,
@@ -13,6 +12,8 @@ import {
   Wand2,
   Search,
   Loader2,
+  Copy,
+  Info,
 } from "lucide-react";
 import { apiRequest } from "@/lib/queryClient";
 import type { CoachResult } from "@/lib/story-coach";
@@ -40,6 +41,7 @@ export function StoryCoachPanel({
 }: StoryCoachPanelProps) {
   const [word, setWord] = useState("");
   const [synonyms, setSynonyms] = useState<string[] | null>(null);
+  const [copied, setCopied] = useState<string | null>(null);
 
   const thesaurus = useMutation({
     mutationFn: async (w: string) => {
@@ -56,26 +58,41 @@ export function StoryCoachPanel({
     },
   });
 
+  const copyWord = (s: string) => {
+    navigator.clipboard.writeText(s).then(() => {
+      setCopied(s);
+      window.setTimeout(() => setCopied((c) => (c === s ? null : c)), 1200);
+    });
+  };
+
   return (
     <Card className="p-6">
-      <div className="flex items-center gap-2 mb-5">
+      <div className="flex items-center gap-2 mb-1">
         <BookOpen className="w-5 h-5 text-primary" />
         <h3 className="font-display text-lg font-bold text-foreground">Story Coach</h3>
         <span className="hidden sm:inline text-xs text-muted-foreground ml-1">
           Aristotle, in 160 characters
         </span>
         <div className="ml-auto flex items-center gap-2">
-          <span className="font-mono text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
-            Craft
+          <span
+            className="font-mono text-[10px] uppercase tracking-[0.14em] text-muted-foreground"
+            title="A rough heuristic from the signals below — a guide, not a grade."
+          >
+            craft signal
           </span>
           <span
             data-testid="text-craft-score"
             className="font-display text-xl font-bold text-primary tabular-nums"
+            title="A rough heuristic from the signals below — a guide, not a grade."
           >
             {result.score}
           </span>
         </div>
       </div>
+      <p className="text-xs text-muted-foreground mb-5 flex items-start gap-1.5">
+        <Info className="w-3 h-3 mt-0.5 shrink-0" />
+        A transparent lens — it shows what it found in your words, not a verdict.
+      </p>
 
       <div className="mb-6">
         <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-muted-foreground mb-3">
@@ -103,7 +120,16 @@ export function StoryCoachPanel({
                 >
                   {beat.label}
                 </span>
-                <p className="text-xs text-muted-foreground">{beat.hint}</p>
+                {beat.present && beat.evidence ? (
+                  <p
+                    data-testid={`arc-evidence-${beat.key}`}
+                    className="text-xs text-success/90"
+                  >
+                    found: <span className="font-medium">"{beat.evidence}"</span>
+                  </p>
+                ) : (
+                  <p className="text-xs text-muted-foreground">{beat.hint}</p>
+                )}
               </div>
             </div>
           ))}
@@ -118,8 +144,12 @@ export function StoryCoachPanel({
           {result.appeals.map((appeal) => (
             <div key={appeal.key} data-testid={`appeal-${appeal.key}`}>
               <div className="flex items-center justify-between mb-1">
-                <span className="text-sm font-medium text-foreground">{appeal.label}</span>
-                <span className="text-xs text-muted-foreground">{appeal.blurb}</span>
+                <span className="text-sm font-medium text-foreground" title={appeal.blurb}>
+                  {appeal.label}
+                </span>
+                <span className="font-mono text-[9px] uppercase tracking-[0.12em] text-muted-foreground">
+                  {appeal.level === 0 ? "no signal" : `${appeal.level}/3`}
+                </span>
               </div>
               <div className="h-2 bg-muted rounded-full overflow-hidden">
                 <div
@@ -127,6 +157,12 @@ export function StoryCoachPanel({
                   style={{ width: `${appeal.score}%` }}
                 />
               </div>
+              <p
+                data-testid={`appeal-why-${appeal.key}`}
+                className="text-xs text-muted-foreground mt-1"
+              >
+                {appeal.why}
+              </p>
             </div>
           ))}
         </div>
@@ -153,8 +189,11 @@ export function StoryCoachPanel({
       )}
 
       <div className="mb-6">
-        <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-muted-foreground mb-3 flex items-center gap-1.5">
-          <Search className="w-3.5 h-3.5" /> Word Polish
+        <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-muted-foreground mb-1 flex items-center gap-1.5">
+          <Search className="w-3.5 h-3.5" /> Thesaurus
+        </p>
+        <p className="text-[11px] text-muted-foreground mb-2">
+          Look up a word, then click a result to copy it.
         </p>
         <form
           className="flex gap-2"
@@ -165,7 +204,7 @@ export function StoryCoachPanel({
         >
           <Input
             data-testid="input-thesaurus"
-            placeholder="Find a punchier word…"
+            placeholder="Look up a word…"
             value={word}
             onChange={(e) => setWord(e.target.value)}
             className="h-9"
@@ -186,14 +225,20 @@ export function StoryCoachPanel({
               <span className="text-xs text-muted-foreground italic">No synonyms found.</span>
             ) : (
               synonyms.map((s) => (
-                <Badge
+                <button
                   key={s}
-                  variant="outline"
-                  className="text-xs font-normal"
+                  type="button"
+                  onClick={() => copyWord(s)}
                   data-testid={`synonym-${s}`}
+                  className="group inline-flex items-center gap-1 rounded-full border border-border bg-muted/30 px-2.5 py-1 text-xs font-medium text-foreground hover-elevate transition-all"
                 >
-                  {s}
-                </Badge>
+                  {copied === s ? (
+                    <Check className="w-3 h-3 text-success" />
+                  ) : (
+                    <Copy className="w-3 h-3 text-muted-foreground group-hover:text-primary transition-colors" />
+                  )}
+                  {copied === s ? "copied" : s}
+                </button>
               ))
             )}
           </div>
@@ -201,8 +246,18 @@ export function StoryCoachPanel({
       </div>
 
       <div className="pt-4 border-t border-border">
+        <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-muted-foreground mb-2 flex items-center gap-1.5">
+          <Wand2 className="w-3.5 h-3.5" /> AI rewrite
+          <span className="normal-case tracking-normal text-[10px] text-muted-foreground/80">
+            (optional)
+          </span>
+        </p>
         {aiEnabled ? (
           <>
+            <p className="text-[11px] text-muted-foreground mb-2.5">
+              Rewrites your whole story in 160 characters or fewer using your configured AI
+              endpoint.
+            </p>
             <Button
               size="sm"
               variant="default"
@@ -253,7 +308,7 @@ export function StoryCoachPanel({
             <Wand2 className="w-3.5 h-3.5 mt-0.5 shrink-0" />
             <span>
               AI rewrites are off — you're using the free built-in coach. Add a free Gemini key
-              or your own LM Studio/Ollama endpoint to turn on AI coaching.
+              or your own LM Studio/Ollama endpoint to turn on whole-story AI rewrites.
             </span>
           </div>
         )}

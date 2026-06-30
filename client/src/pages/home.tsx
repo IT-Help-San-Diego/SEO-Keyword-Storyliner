@@ -52,6 +52,12 @@ const EXAMPLE_KEYWORDS = [
   "",
 ];
 
+const liveAppealColors: Record<string, string> = {
+  ethos: "bg-chart-1",
+  pathos: "bg-chart-2",
+  logos: "bg-success",
+};
+
 const STOPWORDS = new Set(
   "a an and are as at be been but by for from had has have he her his i in into is it its known like more most my no not of on one or our she so than that the their them then there these they this to up us was we were what when where which who will with you your".split(
     " ",
@@ -862,6 +868,49 @@ export default function Home() {
 
             <div className="order-3 lg:order-none grid grid-cols-2 lg:grid-cols-1 gap-3">
               {renderSlots(rightSlots)}
+            </div>
+          </div>
+
+          {/* Live appeals — Aristotle, under glass, updating as you type */}
+          <div className="mt-5">
+            <div className="flex items-center gap-2 mb-2">
+              <span className="font-mono text-[11px] uppercase tracking-[0.16em] text-muted-foreground">
+                Aristotle's appeals · live
+              </span>
+              <span className="text-[11px] text-muted-foreground/80">
+                what your words signal right now
+              </span>
+            </div>
+            <div
+              data-testid="live-appeals"
+              className="grid grid-cols-1 sm:grid-cols-3 gap-3"
+            >
+              {coach.appeals.map((a) => (
+                <div
+                  key={a.key}
+                  data-testid={`live-appeal-${a.key}`}
+                  className="rounded-lg border border-border/60 bg-card/40 p-3"
+                >
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm font-medium text-foreground">{a.label}</span>
+                    <span className="font-mono text-[9px] uppercase tracking-[0.12em] text-muted-foreground">
+                      {a.level === 0 ? "—" : `${a.level}/3`}
+                    </span>
+                  </div>
+                  <div className="mt-2 h-1.5 rounded-full bg-muted overflow-hidden">
+                    <div
+                      className={`h-full rounded-full transition-all duration-500 ${liveAppealColors[a.key]}`}
+                      style={{ width: `${a.score}%` }}
+                    />
+                  </div>
+                  <p
+                    data-testid={`live-appeal-why-${a.key}`}
+                    className="mt-1.5 text-[11px] text-muted-foreground leading-snug"
+                  >
+                    {a.why}
+                  </p>
+                </div>
+              ))}
             </div>
           </div>
         </section>
