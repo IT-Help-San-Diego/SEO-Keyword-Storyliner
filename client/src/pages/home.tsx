@@ -21,6 +21,7 @@ import {
   ChevronDown,
   ArrowRight,
   MapPin,
+  TriangleAlert,
 } from "lucide-react";
 import { DancingUnicorns } from "@/components/dancing-unicorns";
 import { StoryCoachPanel } from "@/components/story-coach-panel";
@@ -526,6 +527,32 @@ export default function Home() {
               it earns a slot, like it or not. These eight words are the chunks that make you what
               you are. Name them honestly, and you'll rarely think about keywords again.
             </p>
+          </div>
+
+          <div
+            data-testid="callout-no-cheating"
+            className="mb-8 flex gap-4 rounded-lg border border-destructive/30 bg-destructive/5 p-5 sm:p-6"
+          >
+            <div className="flex items-center justify-center w-9 h-9 shrink-0 rounded-md bg-destructive/12 border border-destructive/25">
+              <TriangleAlert className="w-4 h-4 text-destructive" />
+            </div>
+            <div>
+              <h3 className="font-display text-base font-bold text-foreground mb-2">
+                The ugly elephant: don't pay anyone to cheat
+              </h3>
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                This is where it gets dangerous. Don't hire a shady PR firm or an SEO "growth"
+                shop to game your way up. An AI slop shop will cheat, and cheat, and cheat —
+                spinning fake reviews, junk backlinks, and machine-written filler with your name
+                on it. Search engines catch it, and when they do, the penalty lands on{" "}
+                <em>you</em>: your real listings sink and the internet's memory of your brand gets
+                darker, not brighter.
+              </p>
+              <p className="text-sm text-muted-foreground leading-relaxed mt-3">
+                There's no shortcut around being who you say you are. Tell the truth clearly, and
+                let it compound. That's the only growth that doesn't get taken away.
+              </p>
+            </div>
           </div>
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">

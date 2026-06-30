@@ -54,6 +54,16 @@ about keywords again.
   whether you like it or not. Keywords can be short, real phrases too — for
   example, "emergency IT help, San Diego" — not just single abstract nouns.
 
+## Do not pay anyone to cheat
+
+There is no shortcut around being who you say you are. Do not hire a shady PR firm
+or an SEO "growth" shop to game your way up the rankings. An AI slop shop will
+cheat — fake reviews, junk backlinks, machine-written filler published under your
+name. Search engines catch it, and when they do the penalty lands on you: your
+real listings sink and the internet's memory of your brand gets darker, not
+brighter. Tell the truth clearly and let it compound; that is the only growth
+that does not get taken away.
+
 ## How the tool works
 
 - The Workshop. A 160-character story editor sits in the center, framed by eight
