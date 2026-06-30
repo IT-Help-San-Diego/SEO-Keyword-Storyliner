@@ -87,8 +87,10 @@ that does not get taken away.
 
 - The Workshop. A 160-character story editor sits in the center, framed by eight
   keyword slots. As you write, any keyword that appears in the story lights up,
-  and a live counter tracks how many of the eight you have woven in. Reach six of
-  eight and a celebration plays.
+  and a live counter tracks how many you have woven in. Weave in four — your two
+  anchors plus a couple of real signals, the way best practice recommends — and a
+  celebration plays. You do not need all eight; cramming in keywords is stuffing,
+  and stuffing is the cheating we warn against.
 - Keyword suggestions. Clickable chips, sourced free from the Datamuse API, drop
   a word into the next open discovery slot. They never fill the two anchor slots
   (#1 and #2) — those are hand-typed.

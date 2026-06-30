@@ -14,7 +14,8 @@ The user explicitly does NOT want a paid/managed AI dependency (declined Replit-
 # Free fallbacks (always on, no cost, no key)
 
 - **Story coach** is rule-based and client-side: `client/src/lib/story-coach.ts` analyzes Aristotelian arc (hook/tension/payoff) + ethos/pathos/logos via keyword heuristics. The whole product concept is a compressed brand story in 160 chars (SEO meta length).
-- **Thesaurus + keyword suggestions** use the free **Datamuse API** (`api.datamuse.com`, no key, CORS ok) proxied server-side: `ml=` for synonyms, `rel_trg=` for related/suggested keywords.
+- **Keyword suggestions default to client-side extraction from the user's own typed story** (`extractStoryKeywords` in `home.tsx`), not an API — the user found generic API words "horrible" and wanted suggestions grounded in their sentences. The Datamuse `/api/suggest` proxy is now only the opt-in "Related words" mode (its `useEffect` is gated to that mode). **Thesaurus** still uses the free **Datamuse API** (`api.datamuse.com`, no key, CORS ok, `ml=` synonyms).
+- **Celebration threshold = 4 woven-in keywords** (`REQUIRED_KEYWORDS`), chosen with the user: two anchors + two real supporting signals. **Why:** lower than the old 6 (which nudged toward keyword stuffing — contradicting the app's own anti-cheating message); 4 reads as natural and honest brands often only have a handful. Keep UI success copy number-agnostic so it doesn't drift if the threshold changes.
 
 # Guardrails on the proxy/AI routes
 

@@ -23,6 +23,8 @@ import {
   MapPin,
   TriangleAlert,
   Anchor,
+  Sparkles,
+  Wand2,
 } from "lucide-react";
 import { DancingUnicorns } from "@/components/dancing-unicorns";
 import { StoryCoachPanel } from "@/components/story-coach-panel";
@@ -32,8 +34,56 @@ import { apiRequest } from "@/lib/queryClient";
 import aristotleImg from "@assets/generated_images/aristotle_engraving.png";
 
 const MAX_STORY_LENGTH = 160;
-const REQUIRED_KEYWORDS = 6;
+const REQUIRED_KEYWORDS = 4;
 const TOTAL_KEYWORDS = 8;
+
+const EXAMPLE_STORY =
+  'Don McLean is an American singer-songwriter known for his songs "American Pie" and "Vincent (Starry Starry Night)". Known as the "American Troubadour"';
+const EXAMPLE_KEYWORDS = [
+  "American singer-songwriter",
+  "Don McLean",
+  "American Pie",
+  "Vincent (Starry Starry Night)",
+  "American Troubadour",
+  "",
+  "",
+  "",
+];
+
+const STOPWORDS = new Set(
+  "a an and are as at be been but by for from had has have he her his i in into is it its known like more most my no not of on one or our she so than that the their them then there these they this to up us was we were what when where which who will with you your".split(
+    " ",
+  ),
+);
+
+function extractStoryKeywords(text: string, existing: string[]): string[] {
+  const used = new Set(
+    existing.map((k) => k.toLowerCase().trim()).filter(Boolean),
+  );
+  const seen = new Set<string>();
+  const out: string[] = [];
+  const add = (raw: string) => {
+    const v = raw.replace(/^[^A-Za-z0-9]+|[^A-Za-z0-9'’)]+$/g, "").trim();
+    if (v.length < 3) return;
+    const key = v.toLowerCase();
+    if (seen.has(key) || used.has(key)) return;
+    if (v.split(/\s+/).length === 1 && STOPWORDS.has(key)) return;
+    seen.add(key);
+    out.push(v);
+  };
+  (text.match(/[“"']([^“”"']{2,40})[”"']/g) || []).forEach(add);
+  (text.match(/[A-Z][\w’']+(?:\s+(?:[A-Z][\w’']+|of|the|and|&)){0,3}/g) || [])
+    .filter((p) => p.trim().split(/\s+/).length >= 2)
+    .forEach(add);
+  (text.match(/[A-Z][\w’']{2,}/g) || []).forEach(add);
+  const words = text.toLowerCase().match(/[a-z][a-z'’-]{3,}/g) || [];
+  const freq = new Map<string, number>();
+  for (const w of words) if (!STOPWORDS.has(w)) freq.set(w, (freq.get(w) || 0) + 1);
+  [...freq.entries()]
+    .sort((a, b) => b[1] - a[1] || b[0].length - a[0].length)
+    .forEach(([w]) => add(w));
+  return out.slice(0, 10);
+}
 
 interface AnchorConfig {
   label: string;
@@ -169,6 +219,7 @@ export default function Home() {
   const [story, setStory] = useState("");
   const [suggestions, setSuggestions] = useState<string[]>([]);
   const [loadingSuggest, setLoadingSuggest] = useState(false);
+  const [suggestMode, setSuggestMode] = useState<"story" | "related">("story");
   const { toast } = useToast();
 
   const { data: aiStatus } = useQuery<{ enabled: boolean; provider: string | null }>({
@@ -217,6 +268,10 @@ export default function Home() {
   const progressPercentage = (matchedCount / REQUIRED_KEYWORDS) * 100;
 
   useEffect(() => {
+    if (suggestMode !== "related") {
+      setLoadingSuggest(false);
+      return;
+    }
     const controller = new AbortController();
     const handle = setTimeout(async () => {
       try {
@@ -242,7 +297,7 @@ export default function Home() {
       controller.abort();
       clearTimeout(handle);
     };
-  }, [story, keywords]);
+  }, [story, keywords, suggestMode]);
 
   const updateKeyword = useCallback((index: number, value: string) => {
     setKeywords((prev) => {
@@ -292,13 +347,26 @@ export default function Home() {
     toast({ title: "Cleared", description: "A blank page. Begin again." });
   }, [toast]);
 
+  const loadExample = useCallback(() => {
+    setKeywords([...EXAMPLE_KEYWORDS]);
+    setStory(EXAMPLE_STORY);
+    toast({
+      title: "A perfect example",
+      description: "Don McLean — anchored, honest, and woven into 150 characters.",
+    });
+  }, [toast]);
+
   const scrollToWorkshop = useCallback(() => {
     document
       .getElementById("workshop")
       ?.scrollIntoView({ behavior: "smooth", block: "start" });
   }, []);
 
-  const visibleSuggestions = suggestions
+  const storyPicks = useMemo(
+    () => extractStoryKeywords(story, keywords),
+    [story, keywords],
+  );
+  const visibleSuggestions = (suggestMode === "story" ? storyPicks : suggestions)
     .filter((s) => !keywords.some((k) => k.toLowerCase().trim() === s.toLowerCase()))
     .slice(0, 8);
 
@@ -420,11 +488,23 @@ export default function Home() {
 
         {/* The Window — the workshop */}
         <section id="workshop" className="scroll-mt-6 py-10 border-t border-border/60">
-          <div className="mb-8">
-            <Eyebrow>The window · Write the story</Eyebrow>
-            <h2 className="font-display text-2xl sm:text-3xl font-bold mt-4 text-foreground">
-              The keywords are the frame. The story is the window.
-            </h2>
+          <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
+            <div>
+              <Eyebrow>The window · Write the story</Eyebrow>
+              <h2 className="font-display text-2xl sm:text-3xl font-bold mt-4 text-foreground">
+                The keywords are the frame. The story is the window.
+              </h2>
+            </div>
+            <Button
+              data-testid="button-load-example"
+              variant="outline"
+              size="sm"
+              onClick={loadExample}
+              className="border-primary/50 text-primary hover:text-primary"
+            >
+              <Sparkles className="w-4 h-4 mr-2" />
+              See a perfect example
+            </Button>
           </div>
 
           {/* Suggestion chips */}
@@ -434,17 +514,39 @@ export default function Home() {
               <span className="font-mono text-[11px] uppercase tracking-[0.16em] text-foreground">
                 Suggested keywords
               </span>
-              <span className="text-xs text-muted-foreground">
-                — click to drop one into an open slot
-              </span>
               {loadingSuggest && (
                 <Loader2 className="w-3.5 h-3.5 text-muted-foreground animate-spin ml-1" />
               )}
+              <div className="ml-auto flex items-center gap-1">
+                <Button
+                  data-testid="button-suggest-from-story"
+                  variant={suggestMode === "story" ? "default" : "outline"}
+                  size="sm"
+                  className="h-7 px-2.5 text-xs"
+                  onClick={() => setSuggestMode("story")}
+                >
+                  <Wand2 className="w-3.5 h-3.5 mr-1.5" />
+                  From my story
+                </Button>
+                <Button
+                  data-testid="button-suggest-related"
+                  variant={suggestMode === "related" ? "default" : "outline"}
+                  size="sm"
+                  className="h-7 px-2.5 text-xs"
+                  onClick={() => setSuggestMode("related")}
+                >
+                  Related words
+                </Button>
+              </div>
             </div>
             <div className="flex flex-wrap gap-2">
               {visibleSuggestions.length === 0 ? (
                 <span className="text-sm text-muted-foreground italic">
-                  {loadingSuggest ? "Reading your story…" : "Start writing to get tailored suggestions."}
+                  {suggestMode === "related"
+                    ? loadingSuggest
+                      ? "Finding related words…"
+                      : "No related words yet — keep writing."
+                    : "Write your story, then these pull straight from your own words."}
                 </span>
               ) : (
                 visibleSuggestions.map((word) => (
@@ -511,6 +613,33 @@ export default function Home() {
                     The stars aligned
                   </Badge>
                 )}
+              </div>
+
+              <div className="mt-3" data-testid="meter-length">
+                <div className="relative h-1 w-full rounded-full bg-muted">
+                  <div
+                    className={`absolute inset-y-0 left-0 rounded-full transition-all duration-300 ${
+                      story.length > 120 ? "bg-primary" : "bg-success"
+                    }`}
+                    style={{
+                      width: `${Math.min(100, (story.length / MAX_STORY_LENGTH) * 100)}%`,
+                    }}
+                  />
+                  <div
+                    className="absolute -top-1 -bottom-1 w-px bg-foreground/40"
+                    style={{ left: `${(120 / MAX_STORY_LENGTH) * 100}%` }}
+                  />
+                </div>
+                <div className="flex justify-between mt-1.5 font-mono text-[9px] uppercase tracking-[0.12em] text-muted-foreground">
+                  <span data-testid="text-length-zone">
+                    {story.length === 0
+                      ? "every character earns its place"
+                      : story.length <= 120
+                        ? "fits in full on phones"
+                        : "full on desktop · phones show ~120"}
+                  </span>
+                  <span>phone ~120 · desktop ~160</span>
+                </div>
               </div>
 
               <div className="flex flex-wrap gap-2 mt-5 pt-5 border-t border-border">
@@ -625,7 +754,7 @@ export default function Home() {
                 </p>
                 <p className="text-sm text-muted-foreground max-w-xs">
                   {isSuccess
-                    ? "Six of eight, working inside one sentence. The unicorns approve."
+                    ? "Anchored, honest, and working inside one sentence. The unicorns approve."
                     : `Weave in ${REQUIRED_KEYWORDS - matchedCount} more keyword${
                         REQUIRED_KEYWORDS - matchedCount !== 1 ? "s" : ""
                       } to align the stars.`}
