@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { X } from "lucide-react";
 
 const unicorns = [
   { id: 1, left: "8%", delay: 0, size: 84 },
@@ -120,12 +121,20 @@ function StarSparkle({ size }: { size: number }) {
   );
 }
 
-export function DancingUnicorns() {
+export function DancingUnicorns({ onDismiss }: { onDismiss?: () => void }) {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
     setVisible(true);
+    const auto = setTimeout(() => handleClose(), 6500);
+    return () => clearTimeout(auto);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const handleClose = () => {
+    setVisible(false);
+    setTimeout(() => onDismiss?.(), 500);
+  };
 
   return (
     <div 
@@ -134,6 +143,16 @@ export function DancingUnicorns() {
       }`}
     >
       <div className="absolute inset-0 bg-gradient-to-b from-success/10 to-transparent" />
+
+      <button
+        type="button"
+        data-testid="button-dismiss-celebration"
+        onClick={handleClose}
+        aria-label="Dismiss celebration"
+        className="pointer-events-auto absolute top-5 right-5 flex h-11 w-11 items-center justify-center rounded-full border border-foreground/20 bg-background/80 text-foreground/80 backdrop-blur-sm transition-all hover:bg-background hover:text-foreground hover:scale-105"
+      >
+        <X className="h-5 w-5" />
+      </button>
       
       {confetti.map((c) => (
         <div
@@ -206,6 +225,14 @@ export function DancingUnicorns() {
           Hypothesis confirmed — your keywords and your story now prove each other.
           The foundation holds.
         </p>
+        <button
+          type="button"
+          data-testid="button-keep-writing"
+          onClick={handleClose}
+          className="pointer-events-auto mt-7 inline-flex items-center gap-2 rounded-full border border-foreground/25 bg-background/70 px-5 py-2 font-mono text-xs uppercase tracking-[0.2em] text-foreground/85 backdrop-blur-sm transition-all hover:bg-background hover:text-foreground animate-in fade-in duration-500 delay-500"
+        >
+          Keep writing
+        </button>
       </div>
     </div>
   );

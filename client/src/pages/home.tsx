@@ -1,4 +1,4 @@
-import { useState, useMemo, useCallback, useEffect } from "react";
+import { useState, useMemo, useCallback, useEffect, useRef } from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -268,6 +268,17 @@ export default function Home() {
   const isSuccess = matchedCount >= REQUIRED_KEYWORDS;
   const progressPercentage = (matchedCount / REQUIRED_KEYWORDS) * 100;
 
+  const [showCelebration, setShowCelebration] = useState(false);
+  const wasSuccess = useRef(false);
+  useEffect(() => {
+    if (isSuccess && !wasSuccess.current) {
+      setShowCelebration(true);
+    } else if (!isSuccess) {
+      setShowCelebration(false);
+    }
+    wasSuccess.current = isSuccess;
+  }, [isSuccess]);
+
   useEffect(() => {
     if (suggestMode !== "related") {
       setLoadingSuggest(false);
@@ -397,7 +408,7 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-background">
-      {isSuccess && <DancingUnicorns />}
+      {showCelebration && <DancingUnicorns onDismiss={() => setShowCelebration(false)} />}
 
       {/* Top brand strip */}
       <div className="border-b border-border/60">
