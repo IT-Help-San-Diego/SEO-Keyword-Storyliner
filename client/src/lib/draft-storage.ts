@@ -28,11 +28,13 @@ export function loadDraft(): StoredDraft | null {
   }
 }
 
-export function saveDraft(draft: StoredDraft): void {
+export function saveDraft(draft: StoredDraft): boolean {
   try {
     localStorage.setItem(DRAFT_KEY, JSON.stringify(draft));
+    return true;
   } catch {
     /* storage unavailable or full — fail silently, never block the user */
+    return false;
   }
 }
 

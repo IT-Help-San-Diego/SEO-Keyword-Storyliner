@@ -299,6 +299,37 @@ export default function Home() {
     wasSuccess.current = isSuccess;
   }, [isSuccess]);
 
+  const draftMounted = useRef(false);
+  useEffect(() => {
+    if (!draftMounted.current) {
+      draftMounted.current = true;
+      return;
+    }
+    if (exampleLoaded) return;
+    const handle = setTimeout(() => {
+      const hasContent =
+        story.trim().length > 0 || keywords.some((k) => k.trim().length > 0);
+      if (hasContent) {
+        const ok = saveDraft({ story, keywords });
+        setDraftStatus(ok ? "saved" : "none");
+      } else {
+        clearDraft();
+        setDraftStatus("none");
+      }
+    }, 500);
+    return () => clearTimeout(handle);
+  }, [story, keywords, exampleLoaded]);
+
+  useEffect(() => {
+    if (initialHasContent) {
+      toast({
+        title: "Draft restored",
+        description: "Your words from last time are back on the page.",
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   useEffect(() => {
     if (suggestMode !== "related") {
       setLoadingSuggest(false);
@@ -377,21 +408,41 @@ export default function Home() {
   }, [story, toast]);
 
   const handleReset = useCallback(() => {
+    if (exampleLoaded && preExampleDraft.current) {
+      const restored = preExampleDraft.current;
+      preExampleDraft.current = null;
+      setKeywords([...restored.keywords]);
+      setStory(restored.story);
+      setExampleLoaded(false);
+      toast({
+        title: "Your draft is back",
+        description: "We brought back the words you had before the example.",
+      });
+      return;
+    }
+    preExampleDraft.current = null;
     setKeywords(Array(TOTAL_KEYWORDS).fill(""));
     setStory("");
     setExampleLoaded(false);
+    clearDraft();
+    setDraftStatus("none");
     toast({ title: "Cleared", description: "A blank page. Begin again." });
-  }, [toast]);
+  }, [exampleLoaded, toast]);
 
   const loadExample = useCallback(() => {
+    const hasContent =
+      story.trim().length > 0 || keywords.some((k) => k.trim().length > 0);
+    preExampleDraft.current = hasContent ? { story, keywords: [...keywords] } : null;
     setKeywords([...EXAMPLE_KEYWORDS]);
     setStory(EXAMPLE_STORY);
     setExampleLoaded(true);
     toast({
       title: "A perfect example",
-      description: "Don McLean — anchored, honest, and woven into 150 characters.",
+      description: hasContent
+        ? "Don McLean — your own draft is safe; hit Clear example to bring it back."
+        : "Don McLean — anchored, honest, and woven into 150 characters.",
     });
-  }, [toast]);
+  }, [story, keywords, toast]);
 
   const scrollToWorkshop = useCallback(() => {
     document
@@ -680,6 +731,33 @@ export default function Home() {
                   </span>
                   <span>phone ~120 · desktop ~160</span>
                 </div>
+              </div>
+
+              <div
+                data-testid="status-draft"
+                className="mt-3 flex items-center gap-1.5 font-mono text-[9px] uppercase tracking-[0.12em] text-muted-foreground"
+              >
+                {exampleLoaded ? (
+                  <>
+                    <Save className="w-3 h-3" />
+                    viewing the example · your draft is safe
+                  </>
+                ) : draftStatus === "restored" ? (
+                  <>
+                    <Check className="w-3 h-3 text-success" />
+                    draft restored from this browser
+                  </>
+                ) : draftStatus === "saved" ? (
+                  <>
+                    <Check className="w-3 h-3 text-success" />
+                    saved on this device
+                  </>
+                ) : (
+                  <>
+                    <Save className="w-3 h-3" />
+                    saved on this device as you type
+                  </>
+                )}
               </div>
 
               <div className="flex flex-wrap gap-2 mt-5 pt-5 border-t border-border">
