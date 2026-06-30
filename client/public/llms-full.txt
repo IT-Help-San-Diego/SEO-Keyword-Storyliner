@@ -1,0 +1,90 @@
+# Storyliner — Full Reference
+
+> seo-keyword-storyteller.replit.app — a free tool for writing the foundational
+> story of a brand in 160 characters, the length of an SEO meta description. It is
+> built on 2,500 years of logic from Aristotle and engineered like a Disney story,
+> not decorated. A rule-based Story Coach always works offline and for free; an
+> optional AI rewrite can be wired to any OpenAI-compatible endpoint. Authored by
+> Carey Balboa, founder of IT Help San Diego Inc. ORCID 0009-0000-5237-9065.
+> Part of the same body of work as The Intellectual Resistance
+> (https://intellectualresistance.com/).
+
+## The thesis
+
+A brand begins with a single, deliberate statement — who you are, what you
+believe, and the exact words a stranger would type to find you. Most people skip
+it. They buy the logo and the domain first, then try to reverse-engineer a story
+later, when it is expensive to change. Storyliner puts the story first and keeps
+it to 160 characters so it doubles as your SEO meta description from day one.
+
+## Operating principles
+
+- The story is the foundation. It comes before the logo, the domain, and the ads.
+- Built on Aristotle. Ethos is character — the reason you can be trusted to do
+  this at all. Pathos is feeling — the reason a stranger should care for even one
+  second. Logos is logic — the concrete proof that what you claim is real. A good
+  story also has a shape: a hook, a turn (tension), and a payoff, even compressed
+  into one breath.
+- Keep it real, not buzzword soup. Under 160 characters forces honesty.
+
+## Keywords are honest findability, not a market bet
+
+The point is not to game or chase search. The point is to be, publicly and
+consistently, who you say you are — your name, your address, and what you
+actually do, identical everywhere a person or a search engine looks. When it all
+lines up, you read as real, and the right people simply find you. Keywords are
+not a bet on the market; they are just you, said plainly.
+
+But honest cuts both ways. The thing you are known for may not be the thing you
+wish you were known for — and that is the reality check. If it is how the world
+actually finds you, it earns a slot, like it or not. The eight keywords are the
+chunks that make you what you are. Name them honestly and you will rarely think
+about keywords again.
+
+## How to choose the eight keywords
+
+- Everything matches. Name, address, and offering are identical across your site,
+  your listings, and every profile. Consistency is what makes you findable.
+- The 2 a.m. test. Picture a stranger, alone in the dark, typing into a search
+  bar to solve the exact problem you fix. The words they type are your keywords —
+  not the words you wish they would use.
+- Bread and butter. Every keyword should point at money. If a word does not lead
+  someone toward becoming a customer, it is decoration — cut it.
+- Name what is real. The thing you are best known for is how the world finds you,
+  whether you like it or not. Keywords can be short, real phrases too — for
+  example, "emergency IT help, San Diego" — not just single abstract nouns.
+
+## How the tool works
+
+- The Workshop. A 160-character story editor sits in the center, framed by eight
+  keyword slots. As you write, any keyword that appears in the story lights up,
+  and a live counter tracks how many of the eight you have woven in. Reach six of
+  eight and a celebration plays.
+- Keyword suggestions. Clickable chips, sourced free from the Datamuse API, drop
+  a word into the next open slot.
+- Story Coach. A free, rule-based coach scores your draft on ethos, pathos, and
+  logos and checks the arc — hook, tension, payoff. It never requires an account
+  or a payment and works entirely offline. A free, offline thesaurus helps tighten
+  wording.
+- Optional AI rewrite. Off by default; the rule-based coach always works without
+  it. To enable real AI rewrites, set AI_BASE_URL, AI_MODEL, and an optional
+  AI_API_KEY to any OpenAI-compatible endpoint (for example, the Google Gemini
+  free tier, Groq, Ollama, or LM Studio). When configured, the app exposes a
+  "Get AI rewrite" action that returns two or three tips and an improved version
+  under 160 characters that naturally weaves in your keywords. The AI coach is
+  instructed in the same philosophy described here: face the truth, then tell it
+  clearly.
+
+## Constraints
+
+- The story must stay at or under 160 characters (SEO meta description length).
+- Exactly eight keyword slots.
+- No login, no tracking, no payment required to use the core tool.
+
+## Author and related work
+
+- Carey Balboa — Founder, IT Help San Diego Inc. (https://www.it-help.tech).
+  ORCID 0009-0000-5237-9065.
+- Related work: The Intellectual Resistance (https://intellectualresistance.com/),
+  the DNS Tool (https://dnstool.it-help.tech), and Organic Computer
+  (https://organiccomputer.me/).

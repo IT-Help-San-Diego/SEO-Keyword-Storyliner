@@ -1,0 +1,7 @@
+# seo-keyword-storyteller.replit.app
+# Storyliner — a project of IT Help San Diego Inc.
+
+User-agent: *
+Allow: /
+
+Sitemap: https://seo-keyword-storyteller.replit.app/sitemap.xml

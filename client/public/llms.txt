@@ -1,0 +1,28 @@
+# Storyliner
+
+> A free tool for writing the foundational story of your brand in 160 characters — the SEO meta description most people skip. Built on 2,500 years of logic from Aristotle: ethos, pathos, logos, and a hook–tension–payoff arc. Live keyword tracking and free suggestions help you weave in the words people actually search. By Carey Balboa, IT Help San Diego Inc.
+
+## What it is
+
+- [The Workshop](https://seo-keyword-storyteller.replit.app/#workshop) — a 160-character editor framed by 8 keyword slots. Write your brand story; matched keywords light up live as you weave them in.
+- Story Coach — a free, rule-based coach that scores your story on ethos (character/trust), pathos (feeling), and logos (logic/proof), and checks the arc: hook, tension, payoff. Always works offline; no account, no payment.
+- Keyword suggestions — free, from the Datamuse API. Click a chip to drop a word into an open slot.
+- Optional AI rewrite — off by default. Point it at any OpenAI-compatible endpoint (Gemini free tier, Groq, Ollama, LM Studio) for an AI-written 160-character rewrite.
+
+## The method
+
+- The brand story is the FOUNDATION — it comes before the logo, the domain, the ads.
+- Aristotle, compressed: ethos = the reason you can be trusted; pathos = the reason a stranger cares; logos = the concrete proof. Plus a story shape — a hook, a turn, a payoff — even in one breath.
+- Keywords are honest findability, NOT a market bet. Be publicly who you say you are — name, address, and offering all matching — and the right people simply find you.
+- The reality check: a keyword must name what is TRUE, even when it is not what you wish you were known for. If it is how the world finds you, it earns a slot.
+
+## Principles for choosing keywords
+
+- Everything matches — name, address, and what you do are identical everywhere a person or a search engine looks.
+- The 2 a.m. test — picture a stranger typing to solve the exact problem you fix; their words are your keywords.
+- Bread & butter — every keyword should point at money; if it does not lead toward a customer, cut it.
+- Name what's real — the thing you're known for is how you're found, like it or not; keywords can be short phrases too.
+
+## Author
+
+- Carey Balboa — Founder, IT Help San Diego Inc. ORCID 0009-0000-5237-9065. Part of the same body of work as The Intellectual Resistance (https://intellectualresistance.com/).
