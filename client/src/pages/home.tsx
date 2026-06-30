@@ -6,7 +6,6 @@ import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
-  Sparkles,
   Check,
   Pencil,
   Copy,
@@ -14,18 +13,33 @@ import {
   RotateCcw,
   Plus,
   X,
-  Zap,
+  Moon,
   Loader2,
+  Coins,
+  Search,
+  Type,
 } from "lucide-react";
 import { DancingUnicorns } from "@/components/dancing-unicorns";
 import { StoryCoachPanel } from "@/components/story-coach-panel";
 import { analyzeStory } from "@/lib/story-coach";
 import { useToast } from "@/hooks/use-toast";
 import { apiRequest } from "@/lib/queryClient";
+import aristotleImg from "@assets/generated_images/aristotle_engraving.png";
 
 const MAX_STORY_LENGTH = 160;
 const REQUIRED_KEYWORDS = 6;
 const TOTAL_KEYWORDS = 8;
+
+function Eyebrow({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="flex items-center gap-3">
+      <span className="h-px w-8 bg-primary/60" />
+      <span className="font-mono text-[11px] uppercase tracking-[0.22em] text-primary/90">
+        {children}
+      </span>
+    </div>
+  );
+}
 
 interface KeywordSlotProps {
   index: number;
@@ -40,24 +54,25 @@ function KeywordSlot({ index, value, matched, onChange, onClear }: KeywordSlotPr
   return (
     <div
       data-testid={`slot-keyword-${index}`}
-      className={`relative rounded-lg border p-2.5 transition-all duration-300 ${
+      className={`relative rounded-md border p-2.5 transition-all duration-300 ${
         matched
-          ? "border-success bg-success/10 shadow-[0_0_14px_hsl(160_84%_39%/0.25)]"
+          ? "border-primary/60 bg-primary/10 shadow-[0_0_16px_hsl(36_54%_61%/0.18)]"
           : filled
-            ? "border-border bg-card"
-            : "border-dashed border-border bg-muted/30"
+            ? "border-card-border bg-card"
+            : "border-dashed border-border bg-muted/20"
       }`}
     >
       <div className="flex items-center justify-between mb-1">
-        <span className="text-[10px] font-semibold uppercase tracking-wide text-muted-foreground">
-          Slot {index + 1}
+        <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
+          {String(index + 1).padStart(2, "0")}
         </span>
         {matched ? (
-          <Check className="w-3.5 h-3.5 text-success" />
+          <Check className="w-3.5 h-3.5 text-primary" />
         ) : filled ? (
           <button
             type="button"
             onClick={onClear}
+            aria-label={`Clear keyword slot ${index + 1}`}
             data-testid={`button-clear-slot-${index}`}
             className="text-muted-foreground hover:text-destructive transition-colors"
           >
@@ -73,12 +88,36 @@ function KeywordSlot({ index, value, matched, onChange, onClear }: KeywordSlotPr
         value={value}
         onChange={(e) => onChange(e.target.value)}
         className={`h-8 border-0 bg-transparent px-0 text-sm font-medium focus-visible:ring-0 ${
-          matched ? "text-success" : ""
+          matched ? "text-primary" : ""
         }`}
       />
     </div>
   );
 }
+
+const PRINCIPLES = [
+  {
+    icon: Moon,
+    title: "The 2 a.m. test",
+    body: "Picture a stranger, alone in the dark, typing into a search bar to solve the exact problem you fix. The words they type are your keywords — not the words you wish they'd use.",
+  },
+  {
+    icon: Coins,
+    title: "Bread & butter",
+    body: "Every keyword should point at money. Is this the thing that actually pays you? If a word doesn't lead someone toward becoming a customer, it's decoration — cut it.",
+  },
+  {
+    icon: Type,
+    title: "Words, or tiny sentences",
+    body: "A keyword isn't always one word. \"Emergency IT help, San Diego\" is a keyword. Aim for the short, real phrase a person would actually type — not a single abstract noun.",
+  },
+];
+
+const APPEALS_EXPLAINED = [
+  { label: "Ethos", greek: "ἦθος", body: "Character. The reason you can be trusted to do this at all." },
+  { label: "Pathos", greek: "πάθος", body: "Feeling. The reason a stranger should care for even one second." },
+  { label: "Logos", greek: "λόγος", body: "Logic. The proof — concrete, specific — that the promise is real." },
+];
 
 export default function Home() {
   const [keywords, setKeywords] = useState<string[]>(Array(TOTAL_KEYWORDS).fill(""));
@@ -101,7 +140,7 @@ export default function Home() {
       return apiRequest("POST", "/api/stories", { keywords, story });
     },
     onSuccess: () => {
-      toast({ title: "Story saved!", description: "Your brand story has been saved successfully." });
+      toast({ title: "Story saved", description: "Your brand story has been saved." });
     },
     onError: (error: Error) => {
       toast({
@@ -195,14 +234,14 @@ export default function Home() {
 
   const handleCopyToClipboard = useCallback(() => {
     navigator.clipboard.writeText(story).then(() => {
-      toast({ title: "Copied!", description: "Your brand story has been copied to clipboard." });
+      toast({ title: "Copied", description: "Your brand story is on the clipboard." });
     });
   }, [story, toast]);
 
   const handleReset = useCallback(() => {
     setKeywords(Array(TOTAL_KEYWORDS).fill(""));
     setStory("");
-    toast({ title: "Reset complete", description: "All fields have been cleared." });
+    toast({ title: "Cleared", description: "A blank page. Begin again." });
   }, [toast]);
 
   const visibleSuggestions = suggestions
@@ -231,38 +270,94 @@ export default function Home() {
     <div className="min-h-screen bg-background">
       {isSuccess && <DancingUnicorns />}
 
-      <div className="container mx-auto px-4 py-8 max-w-6xl">
-        <header className="text-center mb-6 animate-in fade-in slide-in-from-top-4 duration-500">
-          <div className="flex items-center justify-center gap-2 mb-3">
-            <Sparkles className="w-7 h-7 text-primary" />
-            <h1 className="text-4xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+      {/* Top brand strip */}
+      <div className="border-b border-border/60">
+        <div className="container mx-auto max-w-6xl px-4 h-14 flex items-center justify-between">
+          <div className="flex items-center gap-2.5">
+            <span className="relative flex h-2 w-2">
+              <span className="absolute inline-flex h-full w-full rounded-full bg-success opacity-70 animate-ping" />
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-success" />
+            </span>
+            <span className="font-mono text-xs uppercase tracking-[0.2em] text-foreground">
               Storyliner
-            </h1>
-            <Sparkles className="w-7 h-7 text-secondary" />
+            </span>
+            <span className="hidden sm:inline font-mono text-[10px] text-muted-foreground border border-border rounded px-1.5 py-0.5">
+              the foundation
+            </span>
           </div>
-          <p className="text-muted-foreground max-w-2xl mx-auto">
-            Build a tiny, compressed story about your brand — a beginning, a middle, and an end in
-            160 characters. The keywords are the frame; the story is the window.
-          </p>
-          <div className="flex items-center justify-center gap-2 mt-3">
-            <Badge
-              variant="outline"
-              data-testid="badge-ai-status"
-              className={`text-xs font-normal ${aiEnabled ? "border-success text-success" : ""}`}
-            >
-              <Zap className="w-3 h-3 mr-1" />
-              {aiEnabled ? "AI coach: on" : "Free coach"}
-            </Badge>
+          <Badge
+            variant="outline"
+            data-testid="badge-ai-status"
+            className={`font-mono text-[10px] uppercase tracking-[0.15em] ${
+              aiEnabled ? "border-success/60 text-success" : "text-muted-foreground"
+            }`}
+          >
+            {aiEnabled ? "AI coach · on" : "Free coach"}
+          </Badge>
+        </div>
+      </div>
+
+      <div className="container mx-auto px-4 max-w-6xl">
+        {/* Hero */}
+        <header className="grid lg:grid-cols-[1.15fr_0.85fr] gap-10 items-center pt-14 pb-12 lg:pt-20 lg:pb-16 animate-in fade-in slide-in-from-bottom-3 duration-700">
+          <div>
+            <Eyebrow>Logic · Reason · A story that shows its work</Eyebrow>
+            <h1 className="font-display text-[2.6rem] leading-[1.04] sm:text-6xl font-bold mt-5 text-foreground">
+              Before the logo.
+              <br />
+              Before the domain.
+              <br />
+              <span className="text-primary">The story.</span>
+            </h1>
+            <p className="mt-6 text-base sm:text-lg leading-relaxed text-muted-foreground max-w-xl">
+              This is the part almost everyone skips. A real brand begins with a single,
+              deliberate statement — who you are, what you believe, and the exact words a
+              stranger would type to find you. We build it the way a Disney writers' room
+              engineers a film — a hook, a turn, a payoff — using{" "}
+              <span className="text-foreground font-medium">2,500 years of logic</span> from
+              Aristotle, compressed into 160 characters.
+            </p>
+            <div className="mt-7 flex flex-wrap items-center gap-x-6 gap-y-2 font-mono text-[11px] uppercase tracking-[0.16em] text-muted-foreground">
+              <span>160 characters</span>
+              <span className="text-border">/</span>
+              <span>8 keywords</span>
+              <span className="text-border">/</span>
+              <span>ethos · pathos · logos</span>
+            </div>
+          </div>
+
+          <div className="relative">
+            <div className="absolute inset-0 -z-10 bg-primary/10 blur-3xl rounded-full" />
+            <img
+              src={aristotleImg}
+              alt="An engraving of Aristotle framed by the golden ratio"
+              data-testid="img-aristotle"
+              className="w-full max-w-md mx-auto rounded-xl border border-border/60 shadow-2xl"
+            />
+            <p className="mt-3 text-center font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
+              Aristotle, c. 350 BC — the original story engineer
+            </p>
           </div>
         </header>
 
-        <section className="mb-5 animate-in fade-in slide-in-from-bottom-2 duration-500">
-          <Card className="p-4">
+        {/* The Window — the workshop */}
+        <section className="py-10 border-t border-border/60">
+          <div className="mb-8">
+            <Eyebrow>The window · Write the story</Eyebrow>
+            <h2 className="font-display text-2xl sm:text-3xl font-bold mt-4 text-foreground">
+              The keywords are the frame. The story is the window.
+            </h2>
+          </div>
+
+          {/* Suggestion chips */}
+          <Card className="p-4 mb-5">
             <div className="flex items-center gap-2 mb-3">
-              <Sparkles className="w-4 h-4 text-warning" />
-              <span className="text-sm font-semibold text-foreground">Suggested keywords</span>
+              <Search className="w-3.5 h-3.5 text-primary" />
+              <span className="font-mono text-[11px] uppercase tracking-[0.16em] text-foreground">
+                Suggested keywords
+              </span>
               <span className="text-xs text-muted-foreground">
-                — click to drop into an open slot
+                — click to drop one into an open slot
               </span>
               {loadingSuggest && (
                 <Loader2 className="w-3.5 h-3.5 text-muted-foreground animate-spin ml-1" />
@@ -271,7 +366,7 @@ export default function Home() {
             <div className="flex flex-wrap gap-2">
               {visibleSuggestions.length === 0 ? (
                 <span className="text-sm text-muted-foreground italic">
-                  {loadingSuggest ? "Finding ideas…" : "Start writing to get tailored suggestions."}
+                  {loadingSuggest ? "Reading your story…" : "Start writing to get tailored suggestions."}
                 </span>
               ) : (
                 visibleSuggestions.map((word) => (
@@ -280,7 +375,7 @@ export default function Home() {
                     type="button"
                     data-testid={`suggestion-${word}`}
                     onClick={() => addSuggestion(word)}
-                    className="group inline-flex items-center gap-1.5 rounded-full border border-border bg-muted/40 px-3 py-1.5 text-sm font-medium text-foreground hover-elevate transition-all"
+                    className="group inline-flex items-center gap-1.5 rounded-full border border-border bg-muted/30 px-3 py-1.5 text-sm font-medium text-foreground hover-elevate transition-all"
                   >
                     <Plus className="w-3.5 h-3.5 text-primary group-hover:scale-110 transition-transform" />
                     {word}
@@ -289,129 +384,169 @@ export default function Home() {
               )}
             </div>
           </Card>
-        </section>
 
-        <section className="grid grid-cols-1 lg:grid-cols-[210px_minmax(0,1fr)_210px] gap-4 items-stretch mb-6">
-          <div className="order-2 lg:order-none grid grid-cols-2 lg:grid-cols-1 gap-3">
-            {renderSlots(leftSlots)}
-          </div>
-
-          <Card
-            className={`order-1 lg:order-none p-6 flex flex-col transition-all duration-500 ${
-              isSuccess
-                ? "border-success bg-gradient-to-br from-success/5 to-success/10 shadow-[0_0_30px_hsl(160_84%_39%/0.35)]"
-                : "shadow-lg"
-            }`}
-          >
-            <div className="flex items-center justify-between mb-3">
-              <h2 className="text-lg font-semibold text-foreground">Your Brand Story</h2>
-              <span className="text-xs text-muted-foreground">SERP description length</span>
+          {/* Framed layout: slots | story | slots */}
+          <div className="grid grid-cols-1 lg:grid-cols-[200px_minmax(0,1fr)_200px] gap-4 items-stretch">
+            <div className="order-2 lg:order-none grid grid-cols-2 lg:grid-cols-1 gap-3">
+              {renderSlots(leftSlots)}
             </div>
 
-            <Textarea
-              data-testid="textarea-story"
-              placeholder="Open with a hook, hint at the change you bring, and land on the payoff — all in one breath."
-              value={story}
-              onChange={(e) => setStory(e.target.value.slice(0, MAX_STORY_LENGTH))}
-              className={`flex-1 min-h-[180px] resize-none text-lg leading-relaxed transition-all duration-300 ${
-                isSuccess ? "border-success" : ""
+            <Card
+              className={`order-1 lg:order-none p-6 sm:p-7 flex flex-col transition-all duration-500 ${
+                isSuccess
+                  ? "border-success/60 shadow-[0_0_36px_hsl(150_50%_45%/0.28)]"
+                  : "shadow-xl"
               }`}
-            />
-
-            <div className="flex items-center justify-between mt-3 flex-wrap gap-2">
-              <div className="flex items-center gap-2">
-                <Pencil className="w-4 h-4 text-muted-foreground" />
-                <span
-                  data-testid="text-char-count"
-                  className={`text-sm font-medium ${
-                    story.length >= MAX_STORY_LENGTH ? "text-destructive" : "text-muted-foreground"
-                  }`}
-                >
-                  {story.length}/{MAX_STORY_LENGTH}
+            >
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="font-display text-lg font-bold text-foreground">Your brand story</h3>
+                <span className="font-mono text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
+                  meta-description length
                 </span>
               </div>
-              {isSuccess && (
-                <Badge className="bg-success text-success-foreground">
-                  <Check className="w-3 h-3 mr-1" />
-                  SEO Optimized
-                </Badge>
-              )}
-            </div>
 
-            <div className="flex flex-wrap gap-2 mt-4 pt-4 border-t border-border">
-              <Button
-                data-testid="button-copy"
-                variant="outline"
-                size="sm"
-                onClick={handleCopyToClipboard}
-                disabled={!story.trim()}
-              >
-                <Copy className="w-4 h-4 mr-2" />
-                Copy
-              </Button>
-              <Button
-                data-testid="button-save"
-                variant="default"
-                size="sm"
-                onClick={() => saveMutation.mutate()}
-                disabled={!story.trim() || saveMutation.isPending}
-              >
-                <Save className="w-4 h-4 mr-2" />
-                {saveMutation.isPending ? "Saving…" : "Save"}
-              </Button>
-              <Button data-testid="button-reset" variant="ghost" size="sm" onClick={handleReset}>
-                <RotateCcw className="w-4 h-4 mr-2" />
-                Reset
-              </Button>
-            </div>
-          </Card>
+              <Textarea
+                data-testid="textarea-story"
+                placeholder="Open with a hook, name the change you bring, land on the payoff — all in one breath."
+                value={story}
+                onChange={(e) => setStory(e.target.value.slice(0, MAX_STORY_LENGTH))}
+                className={`flex-1 min-h-[190px] resize-none text-lg leading-relaxed bg-transparent transition-all duration-300 ${
+                  isSuccess ? "border-success/60" : ""
+                }`}
+              />
 
-          <div className="order-3 lg:order-none grid grid-cols-2 lg:grid-cols-1 gap-3">
-            {renderSlots(rightSlots)}
+              <div className="flex items-center justify-between mt-4 flex-wrap gap-2">
+                <div className="flex items-center gap-2">
+                  <Pencil className="w-3.5 h-3.5 text-muted-foreground" />
+                  <span
+                    data-testid="text-char-count"
+                    className={`font-mono text-sm tabular-nums ${
+                      story.length >= MAX_STORY_LENGTH ? "text-destructive" : "text-muted-foreground"
+                    }`}
+                  >
+                    {story.length} / {MAX_STORY_LENGTH}
+                  </span>
+                </div>
+                {isSuccess && (
+                  <Badge className="bg-success text-success-foreground">
+                    <Check className="w-3 h-3 mr-1" />
+                    The stars aligned
+                  </Badge>
+                )}
+              </div>
+
+              <div className="flex flex-wrap gap-2 mt-5 pt-5 border-t border-border">
+                <Button
+                  data-testid="button-copy"
+                  variant="outline"
+                  size="sm"
+                  onClick={handleCopyToClipboard}
+                  disabled={!story.trim()}
+                >
+                  <Copy className="w-4 h-4 mr-2" />
+                  Copy
+                </Button>
+                <Button
+                  data-testid="button-save"
+                  variant="default"
+                  size="sm"
+                  onClick={() => saveMutation.mutate()}
+                  disabled={!story.trim() || saveMutation.isPending}
+                >
+                  <Save className="w-4 h-4 mr-2" />
+                  {saveMutation.isPending ? "Saving…" : "Save"}
+                </Button>
+                <Button data-testid="button-reset" variant="ghost" size="sm" onClick={handleReset}>
+                  <RotateCcw className="w-4 h-4 mr-2" />
+                  Reset
+                </Button>
+              </div>
+            </Card>
+
+            <div className="order-3 lg:order-none grid grid-cols-2 lg:grid-cols-1 gap-3">
+              {renderSlots(rightSlots)}
+            </div>
           </div>
         </section>
 
-        <section className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <Card className={`p-6 transition-all duration-500 ${isSuccess ? "border-success bg-success/5" : ""}`}>
-            <div className="flex items-center justify-between mb-4">
+        {/* Stars Aligned — keyword strategy */}
+        <section className="py-12 border-t border-border/60">
+          <div className="mb-8 max-w-2xl">
+            <Eyebrow>Stars aligned · Choose words that earn</Eyebrow>
+            <h2 className="font-display text-2xl sm:text-3xl font-bold mt-4 text-foreground">
+              A keyword is a bet on how you'll be found.
+            </h2>
+            <p className="mt-3 text-muted-foreground leading-relaxed">
+              Most people pick keywords too late — after the site, after the logo, when a PR
+              firm asks and it's already expensive to change. Do it first. Here's how to choose
+              the eight that matter.
+            </p>
+          </div>
+
+          <div className="grid sm:grid-cols-3 gap-4">
+            {PRINCIPLES.map((p) => {
+              const Icon = p.icon;
+              return (
+                <Card
+                  key={p.title}
+                  data-testid={`principle-${p.title}`}
+                  className="p-5 hover-elevate transition-all"
+                >
+                  <div className="flex items-center justify-center w-9 h-9 rounded-md bg-primary/12 border border-primary/20 mb-4">
+                    <Icon className="w-4 h-4 text-primary" />
+                  </div>
+                  <h3 className="font-display text-base font-bold text-foreground mb-2">{p.title}</h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed">{p.body}</p>
+                </Card>
+              );
+            })}
+          </div>
+        </section>
+
+        {/* Progress + Coach */}
+        <section className="py-12 border-t border-border/60 grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <Card className={`p-6 transition-all duration-500 ${isSuccess ? "border-success/60" : ""}`}>
+            <div className="flex items-center justify-between mb-5">
               <div>
-                <h3 className="text-lg font-semibold text-foreground mb-1">Keyword Progress</h3>
-                <p className="text-sm text-muted-foreground">
+                <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-muted-foreground mb-1.5">
+                  Keywords woven in
+                </p>
+                <p className="text-sm text-muted-foreground max-w-xs">
                   {isSuccess
-                    ? "Your story is SEO-optimized — the unicorns approve!"
+                    ? "Six of eight, working inside one sentence. The unicorns approve."
                     : `Weave in ${REQUIRED_KEYWORDS - matchedCount} more keyword${
                         REQUIRED_KEYWORDS - matchedCount !== 1 ? "s" : ""
-                      } to celebrate.`}
+                      } to align the stars.`}
                 </p>
               </div>
               <div className="flex items-baseline gap-1 shrink-0">
                 <span
                   data-testid="text-matched-count"
-                  className={`text-3xl font-bold ${isSuccess ? "text-success" : "text-primary"}`}
+                  className={`font-display text-4xl font-bold tabular-nums ${
+                    isSuccess ? "text-success" : "text-primary"
+                  }`}
                 >
                   {matchedCount}
                 </span>
-                <span className="text-muted-foreground">/ {REQUIRED_KEYWORDS}</span>
+                <span className="text-muted-foreground font-mono text-sm">/ {REQUIRED_KEYWORDS}</span>
               </div>
             </div>
 
-            <div className="relative h-3 bg-muted rounded-full overflow-hidden mb-4">
+            <div className="relative h-2 bg-muted rounded-full overflow-hidden mb-4">
               <div
                 className={`h-full rounded-full transition-all duration-500 ease-out ${
-                  isSuccess ? "bg-success" : matchedCount >= 4 ? "bg-warning" : "bg-primary"
+                  isSuccess ? "bg-success" : "bg-primary"
                 }`}
                 style={{ width: `${Math.min(progressPercentage, 100)}%` }}
               />
             </div>
 
-            <div className="flex items-center justify-between text-sm">
-              <span className="text-muted-foreground">
-                {filledKeywords} of {TOTAL_KEYWORDS} slots filled
-              </span>
-              <span className="text-muted-foreground">{matchedCount} appearing in story</span>
+            <div className="flex items-center justify-between font-mono text-[11px] uppercase tracking-[0.12em] text-muted-foreground">
+              <span>{filledKeywords} of {TOTAL_KEYWORDS} slots filled</span>
+              <span>{matchedCount} in the story</span>
             </div>
 
-            <div className="flex flex-wrap gap-2 mt-4 pt-4 border-t border-border">
+            <div className="flex flex-wrap gap-2 mt-5 pt-5 border-t border-border">
               {matchedKeywords.filter((k) => k.keyword.trim()).length === 0 ? (
                 <p className="text-sm text-muted-foreground italic">
                   Add keywords to the frame, then weave them into your story.
@@ -426,11 +561,15 @@ export default function Home() {
                         variant={matched ? "default" : "outline"}
                         className={`px-3 py-1.5 text-sm font-medium transition-all duration-300 ${
                           matched
-                            ? "bg-success text-success-foreground border-success"
-                            : "bg-muted/50 text-muted-foreground"
+                            ? "bg-primary text-primary-foreground border-primary"
+                            : "bg-muted/40 text-muted-foreground"
                         }`}
                       >
-                        {matched ? <Check className="w-3 h-3 mr-1.5" /> : <X className="w-3 h-3 mr-1.5 opacity-50" />}
+                        {matched ? (
+                          <Check className="w-3 h-3 mr-1.5" />
+                        ) : (
+                          <X className="w-3 h-3 mr-1.5 opacity-50" />
+                        )}
                         {keyword}
                       </Badge>
                     )
@@ -448,9 +587,50 @@ export default function Home() {
           />
         </section>
 
-        <footer className="mt-10 text-center animate-in fade-in duration-500">
-          <p className="text-sm text-muted-foreground">
-            Tiny stories, told with ethos, pathos &amp; logos.
+        {/* The Method */}
+        <section className="py-12 border-t border-border/60 grid lg:grid-cols-[0.8fr_1.2fr] gap-10 items-center">
+          <div className="relative order-2 lg:order-none">
+            <div className="absolute inset-0 -z-10 bg-primary/10 blur-3xl rounded-full" />
+            <img
+              src={aristotleImg}
+              alt="Engraving of Aristotle"
+              className="w-full max-w-xs mx-auto rounded-xl border border-border/60 shadow-xl opacity-95"
+            />
+          </div>
+          <div className="order-1 lg:order-none">
+            <Eyebrow>The method · 2,500 years of logic</Eyebrow>
+            <h2 className="font-display text-2xl sm:text-3xl font-bold mt-4 text-foreground">
+              Disney didn't invent this. They borrowed it.
+            </h2>
+            <p className="mt-3 text-muted-foreground leading-relaxed">
+              Every story that moves people stands on three appeals and one shape. Your 160
+              characters need all of them — even compressed into a single breath.
+            </p>
+            <div className="mt-6 space-y-4">
+              {APPEALS_EXPLAINED.map((a) => (
+                <div key={a.label} className="flex gap-4">
+                  <div className="shrink-0 w-16 pt-0.5">
+                    <span className="font-display text-base font-bold text-primary">{a.label}</span>
+                    <span className="block font-serif text-sm text-muted-foreground">{a.greek}</span>
+                  </div>
+                  <p className="text-sm text-muted-foreground leading-relaxed border-l border-border pl-4">
+                    {a.body}
+                  </p>
+                </div>
+              ))}
+            </div>
+            <p className="mt-6 font-mono text-[11px] uppercase tracking-[0.14em] text-muted-foreground">
+              + a shape — beginning · middle · end
+            </p>
+          </div>
+        </section>
+
+        <footer className="py-10 border-t border-border/60 text-center">
+          <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-muted-foreground">
+            Tiny stories, told with ethos, pathos &amp; logos
+          </p>
+          <p className="mt-2 text-xs text-muted-foreground/70">
+            The foundation you build before everything else.
           </p>
         </footer>
       </div>

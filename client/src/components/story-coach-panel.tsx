@@ -27,7 +27,7 @@ interface StoryCoachPanelProps {
 
 const appealColors: Record<string, string> = {
   ethos: "bg-chart-1",
-  pathos: "bg-secondary",
+  pathos: "bg-chart-2",
   logos: "bg-success",
 };
 
@@ -60,13 +60,17 @@ export function StoryCoachPanel({
     <Card className="p-6">
       <div className="flex items-center gap-2 mb-5">
         <BookOpen className="w-5 h-5 text-primary" />
-        <h3 className="text-lg font-semibold text-foreground">Story Coach</h3>
-        <span className="text-xs text-muted-foreground ml-1">Aristotle, in 160 characters</span>
+        <h3 className="font-display text-lg font-bold text-foreground">Story Coach</h3>
+        <span className="hidden sm:inline text-xs text-muted-foreground ml-1">
+          Aristotle, in 160 characters
+        </span>
         <div className="ml-auto flex items-center gap-2">
-          <span className="text-xs text-muted-foreground">Craft score</span>
+          <span className="font-mono text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
+            Craft
+          </span>
           <span
             data-testid="text-craft-score"
-            className="text-lg font-bold text-primary tabular-nums"
+            className="font-display text-xl font-bold text-primary tabular-nums"
           >
             {result.score}
           </span>
@@ -74,7 +78,7 @@ export function StoryCoachPanel({
       </div>
 
       <div className="mb-6">
-        <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground mb-3">
+        <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-muted-foreground mb-3">
           Story Arc
         </p>
         <div className="space-y-2">
@@ -107,7 +111,7 @@ export function StoryCoachPanel({
       </div>
 
       <div className="mb-6">
-        <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground mb-3">
+        <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-muted-foreground mb-3">
           Aristotle's Appeals
         </p>
         <div className="space-y-3">
@@ -130,7 +134,7 @@ export function StoryCoachPanel({
 
       {result.tips.length > 0 && (
         <div className="mb-6">
-          <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground mb-3 flex items-center gap-1.5">
+          <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-muted-foreground mb-3 flex items-center gap-1.5">
             <Lightbulb className="w-3.5 h-3.5" /> Coaching
           </p>
           <ul className="space-y-2">
@@ -149,7 +153,7 @@ export function StoryCoachPanel({
       )}
 
       <div className="mb-6">
-        <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground mb-3 flex items-center gap-1.5">
+        <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-muted-foreground mb-3 flex items-center gap-1.5">
           <Search className="w-3.5 h-3.5" /> Word Polish
         </p>
         <form

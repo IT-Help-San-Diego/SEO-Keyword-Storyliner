@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 
 const unicorns = [
-  { id: 1, left: "10%", delay: 0, size: 60 },
-  { id: 2, left: "25%", delay: 0.3, size: 50 },
-  { id: 3, left: "40%", delay: 0.1, size: 70 },
-  { id: 4, left: "55%", delay: 0.5, size: 55 },
-  { id: 5, left: "70%", delay: 0.2, size: 65 },
-  { id: 6, left: "85%", delay: 0.4, size: 45 },
+  { id: 1, left: "8%", delay: 0, size: 84 },
+  { id: 2, left: "23%", delay: 0.3, size: 70 },
+  { id: 3, left: "38%", delay: 0.1, size: 98 },
+  { id: 4, left: "54%", delay: 0.5, size: 76 },
+  { id: 5, left: "70%", delay: 0.2, size: 90 },
+  { id: 6, left: "86%", delay: 0.4, size: 66 },
 ];
 
 const sparkles = Array.from({ length: 20 }, (_, i) => ({
@@ -31,7 +31,8 @@ const confetti = Array.from({ length: 30 }, (_, i) => ({
   size: Math.random() * 8 + 4,
 }));
 
-function UnicornSVG({ size, flipped = false }: { size: number; flipped?: boolean }) {
+function UnicornSVG({ size, flipped = false, seed = 0 }: { size: number; flipped?: boolean; seed?: number }) {
+  const uid = `u${seed}`;
   return (
     <svg
       width={size}
@@ -42,38 +43,66 @@ function UnicornSVG({ size, flipped = false }: { size: number; flipped?: boolean
       style={{ transform: flipped ? "scaleX(-1)" : undefined }}
     >
       <defs>
-        <linearGradient id="unicornBody" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="hsl(258 90% 96%)" />
-          <stop offset="100%" stopColor="hsl(240 5% 96%)" />
+        <radialGradient id={`${uid}-body`} cx="42%" cy="38%" r="70%">
+          <stop offset="0%" stopColor="hsl(0 0% 100%)" />
+          <stop offset="100%" stopColor="hsl(280 60% 95%)" />
+        </radialGradient>
+        <linearGradient id={`${uid}-mane`} x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="hsl(345 90% 72%)" />
+          <stop offset="30%" stopColor="hsl(38 95% 62%)" />
+          <stop offset="55%" stopColor="hsl(150 60% 55%)" />
+          <stop offset="80%" stopColor="hsl(205 85% 65%)" />
+          <stop offset="100%" stopColor="hsl(275 80% 72%)" />
         </linearGradient>
-        <linearGradient id="rainbowMane" x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%" stopColor="hsl(0 84% 60%)" />
-          <stop offset="20%" stopColor="hsl(38 92% 50%)" />
-          <stop offset="40%" stopColor="hsl(60 92% 50%)" />
-          <stop offset="60%" stopColor="hsl(160 84% 39%)" />
-          <stop offset="80%" stopColor="hsl(239 84% 67%)" />
-          <stop offset="100%" stopColor="hsl(258 90% 66%)" />
-        </linearGradient>
-        <linearGradient id="hornGradient" x1="0%" y1="100%" x2="100%" y2="0%">
-          <stop offset="0%" stopColor="hsl(38 92% 50%)" />
-          <stop offset="100%" stopColor="hsl(45 100% 70%)" />
+        <linearGradient id={`${uid}-horn`} x1="0%" y1="100%" x2="100%" y2="0%">
+          <stop offset="0%" stopColor="hsl(36 92% 55%)" />
+          <stop offset="100%" stopColor="hsl(48 100% 78%)" />
         </linearGradient>
       </defs>
-      
-      <ellipse cx="50" cy="55" rx="25" ry="18" fill="url(#unicornBody)" stroke="hsl(258 90% 80%)" strokeWidth="1" />
-      <ellipse cx="68" cy="45" rx="12" ry="10" fill="url(#unicornBody)" stroke="hsl(258 90% 80%)" strokeWidth="1" />
-      <circle cx="73" cy="43" r="3" fill="hsl(215 28% 17%)" />
-      <circle cx="74" cy="42" r="1" fill="white" />
-      <polygon points="65,30 68,18 71,30" fill="url(#hornGradient)" stroke="hsl(38 70% 40%)" strokeWidth="0.5" />
-      <path d="M 58 35 Q 48 25 40 30 Q 50 28 55 38" fill="url(#rainbowMane)" />
-      <path d="M 53 38 Q 43 28 35 35 Q 45 32 50 42" fill="url(#rainbowMane)" />
-      <path d="M 48 42 Q 38 32 30 40 Q 40 36 45 46" fill="url(#rainbowMane)" />
-      <ellipse cx="38" cy="68" rx="3" ry="8" fill="url(#unicornBody)" stroke="hsl(258 90% 80%)" strokeWidth="1" />
-      <ellipse cx="48" cy="70" rx="3" ry="8" fill="url(#unicornBody)" stroke="hsl(258 90% 80%)" strokeWidth="1" />
-      <ellipse cx="58" cy="70" rx="3" ry="8" fill="url(#unicornBody)" stroke="hsl(258 90% 80%)" strokeWidth="1" />
-      <ellipse cx="65" cy="68" rx="3" ry="8" fill="url(#unicornBody)" stroke="hsl(258 90% 80%)" strokeWidth="1" />
-      <path d="M 25 55 Q 10 50 15 60 Q 12 55 18 50" fill="url(#rainbowMane)" />
-      <path d="M 25 58 Q 8 55 12 65 Q 8 58 15 52" fill="url(#rainbowMane)" />
+
+      {/* tiny chibi body */}
+      <ellipse cx="50" cy="78" rx="17" ry="12" fill={`url(#${uid}-body)`} stroke="hsl(280 50% 84%)" strokeWidth="1.5" />
+      <ellipse cx="40" cy="88" rx="4" ry="6" fill={`url(#${uid}-body)`} stroke="hsl(280 50% 84%)" strokeWidth="1.5" />
+      <ellipse cx="60" cy="88" rx="4" ry="6" fill={`url(#${uid}-body)`} stroke="hsl(280 50% 84%)" strokeWidth="1.5" />
+      <ellipse cx="48" cy="90" rx="4" ry="6" fill={`url(#${uid}-body)`} stroke="hsl(280 50% 84%)" strokeWidth="1.5" />
+      <ellipse cx="68" cy="90" rx="4" ry="6" fill={`url(#${uid}-body)`} stroke="hsl(280 50% 84%)" strokeWidth="1.5" />
+
+      {/* flowing rainbow tail */}
+      <path d="M 66 74 Q 86 64 80 84 Q 88 76 90 90 Q 78 86 74 80" fill={`url(#${uid}-mane)`} />
+
+      {/* giant adorable head */}
+      <circle cx="50" cy="44" r="27" fill={`url(#${uid}-body)`} stroke="hsl(280 50% 84%)" strokeWidth="1.5" />
+
+      {/* ears */}
+      <path d="M 33 26 Q 31 16 39 22 Z" fill={`url(#${uid}-body)`} stroke="hsl(280 50% 84%)" strokeWidth="1.2" />
+      <path d="M 67 26 Q 69 16 61 22 Z" fill={`url(#${uid}-body)`} stroke="hsl(280 50% 84%)" strokeWidth="1.2" />
+
+      {/* gold horn */}
+      <polygon points="44,22 50,2 56,22" fill={`url(#${uid}-horn)`} stroke="hsl(36 70% 42%)" strokeWidth="0.8" />
+      <path d="M 45 19 L 55 19 M 46.5 14 L 53.5 14 M 48 9 L 52 9" stroke="hsl(36 70% 45%)" strokeWidth="0.8" />
+
+      {/* fluffy rainbow forelock/mane */}
+      <path d="M 30 30 Q 22 22 26 38 Q 18 34 24 48 Q 20 46 26 56 L 36 44 Q 30 38 36 30 Z" fill={`url(#${uid}-mane)`} />
+      <path d="M 36 24 Q 42 14 48 22 Q 46 30 40 32 Z" fill={`url(#${uid}-mane)`} />
+      <path d="M 64 24 Q 58 14 52 22 Q 54 30 60 32 Z" fill={`url(#${uid}-mane)`} />
+
+      {/* huge sparkly eyes */}
+      <ellipse cx="40" cy="46" rx="6" ry="7.5" fill="hsl(250 30% 18%)" />
+      <ellipse cx="60" cy="46" rx="6" ry="7.5" fill="hsl(250 30% 18%)" />
+      <circle cx="42" cy="43" r="2.4" fill="white" />
+      <circle cx="62" cy="43" r="2.4" fill="white" />
+      <circle cx="38.5" cy="49" r="1.2" fill="white" opacity="0.85" />
+      <circle cx="58.5" cy="49" r="1.2" fill="white" opacity="0.85" />
+
+      {/* rosy cheeks */}
+      <ellipse cx="32" cy="54" rx="4" ry="2.6" fill="hsl(345 90% 78%)" opacity="0.75" />
+      <ellipse cx="68" cy="54" rx="4" ry="2.6" fill="hsl(345 90% 78%)" opacity="0.75" />
+
+      {/* tiny snout + happy mouth */}
+      <ellipse cx="50" cy="58" rx="6" ry="4.5" fill="hsl(280 40% 97%)" />
+      <circle cx="47" cy="58" r="0.9" fill="hsl(280 30% 70%)" />
+      <circle cx="53" cy="58" r="0.9" fill="hsl(280 30% 70%)" />
+      <path d="M 46 61 Q 50 64 54 61" stroke="hsl(280 30% 60%)" strokeWidth="1" strokeLinecap="round" fill="none" />
     </svg>
   );
 }
@@ -145,21 +174,21 @@ export function DancingUnicorns() {
             animationDelay: `${unicorn.delay}s`,
           }}
         >
-          <UnicornSVG size={unicorn.size} flipped={i % 2 === 0} />
+          <UnicornSVG size={unicorn.size} flipped={i % 2 === 0} seed={unicorn.id} />
         </div>
       ))}
 
       <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center">
-        <div 
-          className="text-6xl font-bold text-success animate-pulse"
+        <div
+          className="font-display text-6xl font-bold text-success animate-pulse"
           style={{
-            textShadow: "0 0 20px hsl(160 84% 39% / 0.5)",
+            textShadow: "0 0 24px hsl(150 50% 45% / 0.55)",
           }}
         >
-          Success!
+          The stars aligned!
         </div>
         <p className="text-lg text-muted-foreground mt-2 animate-in fade-in duration-500 delay-300">
-          Your brand story is SEO-ready!
+          Six keywords, one story. Your foundation is set.
         </p>
       </div>
     </div>

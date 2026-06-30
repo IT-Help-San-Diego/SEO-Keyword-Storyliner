@@ -20,7 +20,7 @@ function Router() {
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <ThemeProvider defaultTheme="light" storageKey="storyliner-theme">
+      <ThemeProvider defaultTheme="dark" storageKey="storyliner-theme">
         <TooltipProvider>
           <div className="fixed top-4 right-4 z-50">
             <ThemeToggle />
