@@ -9,7 +9,7 @@ The user explicitly does NOT want a paid/managed AI dependency (declined Replit-
 
 - AI is **optional**. It activates only when env vars `AI_BASE_URL` + `AI_MODEL` are set (optional `AI_API_KEY`). The server calls `{AI_BASE_URL}/chat/completions` with the standard OpenAI chat shape via plain `fetch` — no SDK, no npm install. This means it works with LM Studio, Ollama, llama.cpp, Google Gemini free tier, or Groq — all OpenAI-compatible.
 - **Why:** keeps the app free by default and lets the user self-host or use a free-tier key later without a rewrite. Recommended free path for real AI = Google Gemini free tier (OpenAI-compatible endpoint, no paid account).
-- `/api/ai/status` reports `{enabled, provider}`; the UI shows "Free coach" vs "AI coach: on" and only calls `/api/ai/coach` when enabled.
+- `/api/ai/status` reports `{enabled, provider}`; the client only calls `/api/ai/coach` when enabled. (AI status is NOT surfaced in the header — see line below on why pricing/AI-status language was removed from the top strip.)
 
 # Free fallbacks (always on, no cost, no key)
 

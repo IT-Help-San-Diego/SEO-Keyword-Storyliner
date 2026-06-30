@@ -4,3 +4,4 @@
 - [Draft persistence](draft-persistence.md) — draft autosaves to localStorage; autosave pauses while the perfect example is loaded so it never clobbers the user's real words; status must reflect real write success.
 - [Prod CSP + Replit widgets](prod-csp-replit-widgets.md) — the hand-written prod CSP must allow Replit domains or the published-app feedback beacon (and similar injected widgets) won't render.
 - [Perfect example + coach](perfect-example-and-coach.md) — the Don McLean example must light all 3 arc beats + ethos/pathos/logos with real evidence and stay location-free (matching is now word-boundary, see story-coach-honesty).
+- [Keyword/hashtag framing + anchors](keyword-hashtag-framing.md) — slots are "keywords AND hashtags" (same words, two homes); spell words out, # is accent only; keep keyword≠hashtag honest; two anchors (what/who) independent — one/other/both.

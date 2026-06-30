@@ -109,7 +109,7 @@ const ANCHOR_SLOTS: Record<number, AnchorConfig> = {
   1: {
     label: "Anchor · who",
     placeholder: "your brand name",
-    hint: "the name people actually call you",
+    hint: "the name people actually call you — optional if your category already carries the search",
   },
 };
 
@@ -573,7 +573,7 @@ export default function Home() {
               This is the part almost everyone skips. A real brand begins with a single,
               deliberate statement — who you are, what you believe, and the exact words a
               stranger would type to find you: the keywords that surface you in search and the
-              hashtags that surface you on social. We build it the way a Disney writers' room
+              hashtags that can improve discovery on social. We build it the way a Disney writers' room
               engineers a film — a hook, a turn, a payoff — using{" "}
               <span className="text-foreground font-medium">2,500 years of logic</span> from
               Aristotle, compressed into 160 characters.
@@ -639,7 +639,7 @@ export default function Home() {
               <p className="mt-3 text-sm leading-relaxed text-muted-foreground max-w-lg">
                 Same words, two homes — your keywords in a search bar, your hashtags on social.
                 The <span className="text-foreground font-medium">#</span> that makes you
-                findable everywhere.
+                more findable across search and social.
               </p>
             </div>
             <Button
@@ -712,6 +712,19 @@ export default function Home() {
               )}
             </div>
           </Card>
+
+          {/* Anchor guidance */}
+          <div className="mb-4 flex items-start gap-2.5 rounded-md border border-primary/25 bg-primary/[0.04] px-3.5 py-3">
+            <Anchor className="w-4 h-4 text-primary mt-0.5 shrink-0" />
+            <p className="text-xs leading-relaxed text-muted-foreground">
+              <span className="font-medium text-foreground">Two anchors hold the frame:</span>{" "}
+              what you do and who you are. Use one, the other, or both — some bigger brands can
+              lead with category alone; local brands keep the name. And if your name already
+              says what you do, like{" "}
+              <span className="text-foreground">"IT Help San Diego,"</span> a single anchor can
+              carry both.
+            </p>
+          </div>
 
           {/* Framed layout: slots | story | slots */}
           <div className="grid grid-cols-1 lg:grid-cols-[200px_minmax(0,1fr)_200px] gap-4 items-stretch">
