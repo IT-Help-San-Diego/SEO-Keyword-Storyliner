@@ -94,7 +94,7 @@ interface AnchorConfig {
 const ANCHOR_SLOTS: Record<number, AnchorConfig> = {
   0: {
     label: "Anchor · what",
-    placeholder: "what you are (+ where, if local)",
+    placeholder: "what you are",
     hint: 'your core category — add a place only if you\'re local, e.g. "IT support, San Diego". A global or personal brand can skip the where.',
   },
   1: {
