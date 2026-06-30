@@ -18,6 +18,9 @@ import {
   Coins,
   Search,
   Type,
+  ChevronDown,
+  ArrowRight,
+  MapPin,
 } from "lucide-react";
 import { DancingUnicorns } from "@/components/dancing-unicorns";
 import { StoryCoachPanel } from "@/components/story-coach-panel";
@@ -97,6 +100,11 @@ function KeywordSlot({ index, value, matched, onChange, onClear }: KeywordSlotPr
 
 const PRINCIPLES = [
   {
+    icon: MapPin,
+    title: "Everything matches",
+    body: "Your name, your address, what you actually do — identical everywhere a person or a search engine looks. When it all lines up, you read as real, and being found takes care of itself.",
+  },
+  {
     icon: Moon,
     title: "The 2 a.m. test",
     body: "Picture a stranger, alone in the dark, typing into a search bar to solve the exact problem you fix. The words they type are your keywords — not the words you wish they'd use.",
@@ -108,8 +116,8 @@ const PRINCIPLES = [
   },
   {
     icon: Type,
-    title: "Words, or tiny sentences",
-    body: "A keyword isn't always one word. \"Emergency IT help, San Diego\" is a keyword. Aim for the short, real phrase a person would actually type — not a single abstract noun.",
+    title: "Name what's real",
+    body: "The thing you're known for may not be the thing you wish you were known for — but if it's how the world finds you, it earns a slot. Keywords can be short phrases, too: \"emergency IT help, San Diego.\"",
   },
 ];
 
@@ -244,6 +252,12 @@ export default function Home() {
     toast({ title: "Cleared", description: "A blank page. Begin again." });
   }, [toast]);
 
+  const scrollToWorkshop = useCallback(() => {
+    document
+      .getElementById("workshop")
+      ?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }, []);
+
   const visibleSuggestions = suggestions
     .filter((s) => !keywords.some((k) => k.toLowerCase().trim() === s.toLowerCase()))
     .slice(0, 8);
@@ -324,6 +338,17 @@ export default function Home() {
               <span className="text-border">/</span>
               <span>ethos · pathos · logos</span>
             </div>
+            <div className="mt-9">
+              <Button
+                size="lg"
+                onClick={scrollToWorkshop}
+                data-testid="button-enter-workshop"
+                className="group"
+              >
+                Enter the workshop
+                <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-0.5" />
+              </Button>
+            </div>
           </div>
 
           <div className="relative">
@@ -340,8 +365,20 @@ export default function Home() {
           </div>
         </header>
 
+        <div className="flex justify-center pb-8 -mt-2">
+          <button
+            type="button"
+            onClick={scrollToWorkshop}
+            aria-label="Scroll down to the workshop"
+            data-testid="button-scroll-workshop"
+            className="text-success transition-colors hover:text-success/80 animate-bounce"
+          >
+            <ChevronDown className="w-7 h-7" />
+          </button>
+        </div>
+
         {/* The Window — the workshop */}
-        <section className="py-10 border-t border-border/60">
+        <section id="workshop" className="scroll-mt-6 py-10 border-t border-border/60">
           <div className="mb-8">
             <Eyebrow>The window · Write the story</Eyebrow>
             <h2 className="font-display text-2xl sm:text-3xl font-bold mt-4 text-foreground">
@@ -469,21 +506,29 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Stars Aligned — keyword strategy */}
+        {/* Stars Aligned — the reality check */}
         <section className="py-12 border-t border-border/60">
           <div className="mb-8 max-w-2xl">
-            <Eyebrow>Stars aligned · Choose words that earn</Eyebrow>
+            <Eyebrow>Stars aligned · The reality check</Eyebrow>
             <h2 className="font-display text-2xl sm:text-3xl font-bold mt-4 text-foreground">
-              A keyword is a bet on how you'll be found.
+              You don't game search. You face the truth, then tell it clearly.
             </h2>
             <p className="mt-3 text-muted-foreground leading-relaxed">
-              Most people pick keywords too late — after the site, after the logo, when a PR
-              firm asks and it's already expensive to change. Do it first. Here's how to choose
-              the eight that matter.
+              Here's the part almost everyone forgets: you don't have to chase keywords. Be
+              honestly, publicly who you say you are — at the address you list, reachable for
+              exactly what you offer — and everything lines up. Google can simply show you to the
+              people already looking. Keywords aren't a bet on the market; they're just you, said
+              plainly.
+            </p>
+            <p className="mt-3 text-muted-foreground leading-relaxed">
+              But honest cuts both ways. The thing you're known for may not be the thing you wish
+              you were known for — and that's the reality check. If it's how the world finds you,
+              it earns a slot, like it or not. These eight words are the chunks that make you what
+              you are. Name them honestly, and you'll rarely think about keywords again.
             </p>
           </div>
 
-          <div className="grid sm:grid-cols-3 gap-4">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {PRINCIPLES.map((p) => {
               const Icon = p.icon;
               return (
