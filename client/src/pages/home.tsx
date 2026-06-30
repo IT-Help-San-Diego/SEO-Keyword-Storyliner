@@ -546,11 +546,9 @@ export default function Home() {
           <Badge
             variant="outline"
             data-testid="badge-ai-status"
-            className={`font-mono text-[10px] uppercase tracking-[0.15em] ${
-              aiEnabled ? "border-success/60 text-success" : "text-muted-foreground"
-            }`}
+            className="font-mono text-[10px] uppercase tracking-[0.15em] text-muted-foreground"
           >
-            {aiEnabled ? "AI coach · on" : "Free coach"}
+            {aiEnabled ? "Free coach · AI soon" : "Free coach"}
           </Badge>
         </div>
       </div>

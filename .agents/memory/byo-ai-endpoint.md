@@ -17,6 +17,14 @@ The user explicitly does NOT want a paid/managed AI dependency (declined Replit-
 - **Keyword suggestions default to client-side extraction from the user's own typed story** (`extractStoryKeywords` in `home.tsx`), not an API — the user found generic API words "horrible" and wanted suggestions grounded in their sentences. The Datamuse `/api/suggest` proxy is now only the opt-in "Related words" mode (its `useEffect` is gated to that mode). **Thesaurus** still uses the free **Datamuse API** (`api.datamuse.com`, no key, CORS ok, `ml=` synonyms).
 - **Celebration threshold = 4 woven-in keywords** (`REQUIRED_KEYWORDS`), chosen with the user: two anchors + two real supporting signals. **Why:** lower than the old 6 (which nudged toward keyword stuffing — contradicting the app's own anti-cheating message); 4 reads as natural and honest brands often only have a handful. Keep UI success copy number-agnostic so it doesn't drift if the threshold changes.
 
+# AI rewrite is intentionally surfaced as "Coming soon" (key out of credits)
+
+The configured Google/Gemini key returns **429 "Your prepayment credits are depleted"**, so live AI rewrites fail. By user decision, the UI presents AI rewrite as **"Coming soon"** rather than a dead button — all AI code is left intact.
+- `story-coach-panel.tsx`: a "Coming soon" badge, the rewrite button is hard-disabled (`disabled`) and labeled "Coming soon", description says it's not available yet.
+- `home.tsx` header badge reads "Free coach · AI soon" (muted) instead of green "AI coach · on", so the header doesn't claim AI is working.
+- **Why:** end-users never supply their own key (it's a server-side secret going to the owner's Gemini endpoint); a visible-but-broken button is worse than an honest "soon".
+- **To re-enable when the key is funded:** remove the `disabled`/"Coming soon" badge in `story-coach-panel.tsx` and restore the live header badge logic in `home.tsx`. No backend change needed — the route/endpoint already work.
+
 # Guardrails on the proxy/AI routes
 
 `/api/suggest`, `/api/thesaurus`, `/api/ai/coach` are unauthenticated proxies, so they have in-memory per-IP rate limiting (`rateLimited()` in `server/routes.ts`). AI responses are validated/normalized with a Zod schema before returning (model JSON can be malformed). Client suggestion fetch uses AbortController to avoid stale-response races.
