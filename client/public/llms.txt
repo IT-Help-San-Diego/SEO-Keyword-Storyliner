@@ -6,7 +6,7 @@
 
 - [The Workshop](https://seo-keyword-storyteller.replit.app/#workshop) — a 160-character editor framed by 8 keyword slots. Write your brand story; matched keywords light up live as you weave them in.
 - Story Coach — a free, rule-based coach that scores your story on ethos (character/trust), pathos (feeling), and logos (logic/proof), and checks the arc: hook, tension, payoff. Always works offline; no account, no payment.
-- Keyword suggestions — free, from the Datamuse API. Click a chip to drop a word into an open slot.
+- Keyword suggestions — free, from the Datamuse API. Click a chip to drop a word into an open discovery slot (never the two hand-typed anchor slots).
 - Optional AI rewrite — off by default. Point it at any OpenAI-compatible endpoint (Gemini free tier, Groq, Ollama, LM Studio) for an AI-written 160-character rewrite.
 
 ## The method
@@ -15,7 +15,7 @@
 - Aristotle, compressed: ethos = the reason you can be trusted; pathos = the reason a stranger cares; logos = the concrete proof. Plus a story shape — a hook, a turn, a payoff — even in one breath.
 - Keywords are honest findability, NOT a market bet. Be publicly who you say you are — name, address, and offering all matching — and the right people simply find you.
 - The reality check: a keyword must name what is TRUE, even when it is not what you wish you were known for. If it is how the world finds you, it earns a slot.
-- The anchor (slot #1): the first of the eight slots is special. It pairs your core identity with your name — what you are plus who you are (e.g. "IT support, San Diego — IT Help San Diego"). The other seven are the discovery words strangers actually type.
+- The anchor (slots #1 and #2): the first two of the eight slots are special and hand-typed. Slot #1 is "what you are" — your core category plus place (e.g. "IT support, San Diego"). Slot #2 is "who you are" — your brand name. The remaining six are the discovery words strangers actually type, and six is really all anyone needs.
 
 ## Principles for choosing keywords
 

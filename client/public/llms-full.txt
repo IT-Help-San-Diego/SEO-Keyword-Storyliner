@@ -41,15 +41,17 @@ actually finds you, it earns a slot, like it or not. The eight keywords are the
 chunks that make you what you are. Name them honestly and you will rarely think
 about keywords again.
 
-## The anchor keyword (slot #1)
+## The anchor keywords (slots #1 and #2)
 
-The first of the eight slots is special — it is the anchor. Your brand name is a
-keyword too (a "branded keyword"), but a stranger who needs you does not yet know
-your name; they search by the problem, not by you. So the anchor pairs both: your
-core identity tied to your name — what you are plus who you are, for example
-"IT support, San Diego — IT Help San Diego." It is the one slot where your name
-belongs, so the moment someone finds you by category, your name binds to it. The
-remaining seven slots are the discovery words real strangers type at 2 a.m.
+The first two of the eight slots are special — together they are the anchor, and
+both are hand-typed rather than filled from suggestions. Slot #1 is "what you are":
+your core category plus place, for example "IT support, San Diego." Slot #2 is
+"who you are": your brand name. Your brand name is a keyword too (a "branded
+keyword"), but a stranger who needs you does not yet know your name; they search by
+the problem, not by you. Splitting the anchor into what + who makes the direction
+obvious and guarantees your name has its own home, so the moment someone finds you
+by category, your name binds to it. The remaining six slots are the discovery words
+real strangers type at 2 a.m. — and six is really all anyone needs.
 
 ## How to choose the eight keywords
 
@@ -88,7 +90,8 @@ that does not get taken away.
   and a live counter tracks how many of the eight you have woven in. Reach six of
   eight and a celebration plays.
 - Keyword suggestions. Clickable chips, sourced free from the Datamuse API, drop
-  a word into the next open slot.
+  a word into the next open discovery slot. They never fill the two anchor slots
+  (#1 and #2) — those are hand-typed.
 - Story Coach. A free, rule-based coach scores your draft on ethos, pathos, and
   logos and checks the arc — hook, tension, payoff. It never requires an account
   or a payment and works entirely offline. A free, offline thesaurus helps tighten
