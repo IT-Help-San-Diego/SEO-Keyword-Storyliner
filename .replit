@@ -37,3 +37,9 @@ author = "agent"
 task = "shell.exec"
 args = "npm run dev"
 waitForPort = 5000
+
+[userenv]
+
+[userenv.shared]
+AI_BASE_URL = "https://generativelanguage.googleapis.com/v1beta/openai"
+AI_MODEL = "gemini-flash-latest"
