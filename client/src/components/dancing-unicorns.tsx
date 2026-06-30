@@ -126,8 +126,21 @@ export function DancingUnicorns({ onDismiss }: { onDismiss?: () => void }) {
 
   useEffect(() => {
     setVisible(true);
-    const auto = setTimeout(() => handleClose(), 6500);
-    return () => clearTimeout(auto);
+    const events = ["pointerdown", "keydown", "wheel", "touchstart"];
+    const dismiss = () => handleClose();
+    // Wait a beat so the very interaction that triggered success
+    // (a keypress or chip tap) doesn't instantly close the celebration.
+    const attachTimer = setTimeout(() => {
+      events.forEach((e) =>
+        window.addEventListener(e, dismiss, { passive: true }),
+      );
+    }, 450);
+    const auto = setTimeout(() => handleClose(), 4500);
+    return () => {
+      clearTimeout(attachTimer);
+      clearTimeout(auto);
+      events.forEach((e) => window.removeEventListener(e, dismiss));
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -197,11 +210,11 @@ export function DancingUnicorns({ onDismiss }: { onDismiss?: () => void }) {
         </div>
       ))}
 
-      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center px-6">
-        <div className="font-mono text-xs sm:text-sm uppercase tracking-[0.45em] text-success mb-4 animate-in fade-in slide-in-from-bottom-2 duration-500">
+      <div className="absolute top-[12%] left-1/2 -translate-x-1/2 text-center px-6 w-full max-w-xl">
+        <div className="font-mono text-[10px] sm:text-xs uppercase tracking-[0.45em] text-success mb-3 animate-in fade-in slide-in-from-bottom-2 duration-500">
           Q.E.D. — the stars aligned
         </div>
-        <div className="font-display text-6xl sm:text-8xl font-extrabold leading-[0.95] animate-in zoom-in-75 duration-700">
+        <div className="font-display text-5xl sm:text-7xl font-extrabold leading-[0.95] animate-in zoom-in-75 duration-700">
           <span
             className="inline-block animate-rainbow-shift"
             style={{
