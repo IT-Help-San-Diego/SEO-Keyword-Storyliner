@@ -541,7 +541,7 @@ export default function Home() {
               Storyliner
             </span>
             <span className="hidden sm:inline font-mono text-[10px] text-muted-foreground border border-border rounded px-1.5 py-0.5">
-              first principles
+              where brands begin
             </span>
           </div>
           <a
