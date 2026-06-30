@@ -22,11 +22,11 @@ const confetti = Array.from({ length: 30 }, (_, i) => ({
   left: `${Math.random() * 100}%`,
   delay: Math.random() * 2,
   color: [
+    "hsl(38 92% 50%)",
+    "hsl(45 100% 70%)",
     "hsl(160 84% 39%)",
     "hsl(160 67% 52%)",
-    "hsl(258 90% 66%)",
-    "hsl(239 84% 67%)",
-    "hsl(38 92% 50%)",
+    "hsl(240 45% 74%)",
   ][Math.floor(Math.random() * 5)],
   size: Math.random() * 8 + 4,
 }));
@@ -178,17 +178,33 @@ export function DancingUnicorns() {
         </div>
       ))}
 
-      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center">
-        <div
-          className="font-display text-6xl font-bold text-success animate-pulse"
-          style={{
-            textShadow: "0 0 24px hsl(150 50% 45% / 0.55)",
-          }}
-        >
-          The stars aligned!
+      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center px-6">
+        <div className="font-mono text-xs sm:text-sm uppercase tracking-[0.45em] text-success mb-4 animate-in fade-in slide-in-from-bottom-2 duration-500">
+          Q.E.D. — the stars aligned
         </div>
-        <p className="text-lg text-muted-foreground mt-2 animate-in fade-in duration-500 delay-300">
-          Six keywords, one story. Your foundation is set.
+        <div className="font-display text-6xl sm:text-8xl font-extrabold leading-[0.95] animate-in zoom-in-75 duration-700">
+          <span
+            className="inline-block animate-rainbow-shift"
+            style={{
+              backgroundImage:
+                "linear-gradient(110deg, hsl(45 100% 74%), hsl(160 84% 54%), hsl(240 60% 80%), hsl(38 95% 60%))",
+              backgroundSize: "200% auto",
+              WebkitBackgroundClip: "text",
+              backgroundClip: "text",
+              color: "transparent",
+              WebkitTextFillColor: "transparent",
+              filter:
+                "drop-shadow(0 0 30px hsl(150 60% 50% / 0.55)) drop-shadow(0 2px 3px hsl(0 0% 0% / 0.35))",
+            }}
+          >
+            The stars
+            <br />
+            aligned
+          </span>
+        </div>
+        <p className="text-base sm:text-lg text-foreground/85 mt-5 max-w-md mx-auto animate-in fade-in duration-500 delay-300">
+          Hypothesis confirmed — your keywords and your story now prove each other.
+          The foundation holds.
         </p>
       </div>
     </div>

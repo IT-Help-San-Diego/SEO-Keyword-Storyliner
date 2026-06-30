@@ -1,1 +1,3 @@
 - [BYO AI endpoint + free coach](byo-ai-endpoint.md) — AI is optional (env-gated OpenAI-compatible endpoint); free fallbacks are rule-based coach + Datamuse; proxy routes are rate-limited.
+- [Prod CSP + Replit widgets](prod-csp-replit-widgets.md) — the hand-written prod CSP must allow Replit domains or the published-app feedback beacon (and similar injected widgets) won't render.
+- [Perfect example + coach](perfect-example-and-coach.md) — the Don McLean example must demonstrate ethos/pathos/logos (coach uses substring hits; any digit grants logos) and stay location-free.

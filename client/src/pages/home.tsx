@@ -38,7 +38,7 @@ const REQUIRED_KEYWORDS = 4;
 const TOTAL_KEYWORDS = 8;
 
 const EXAMPLE_STORY =
-  'Don McLean is an American singer-songwriter known for his songs "American Pie" and "Vincent (Starry Starry Night)". Known as the "American Troubadour"';
+  "Don McLean — American singer-songwriter loved since 1971 for \"American Pie\" & \"Vincent (Starry Starry Night)\". The American Troubadour.";
 const EXAMPLE_KEYWORDS = [
   "American singer-songwriter",
   "Don McLean",
@@ -94,8 +94,8 @@ interface AnchorConfig {
 const ANCHOR_SLOTS: Record<number, AnchorConfig> = {
   0: {
     label: "Anchor · what",
-    placeholder: "what you are + where",
-    hint: 'your core category — e.g. "IT support, San Diego"',
+    placeholder: "what you are (+ where, if local)",
+    hint: 'your core category — add a place only if you\'re local, e.g. "IT support, San Diego". A global or personal brand can skip the where.',
   },
   1: {
     label: "Anchor · who",
@@ -220,6 +220,7 @@ export default function Home() {
   const [suggestions, setSuggestions] = useState<string[]>([]);
   const [loadingSuggest, setLoadingSuggest] = useState(false);
   const [suggestMode, setSuggestMode] = useState<"story" | "related">("story");
+  const [exampleLoaded, setExampleLoaded] = useState(false);
   const { toast } = useToast();
 
   const { data: aiStatus } = useQuery<{ enabled: boolean; provider: string | null }>({
@@ -300,6 +301,7 @@ export default function Home() {
   }, [story, keywords, suggestMode]);
 
   const updateKeyword = useCallback((index: number, value: string) => {
+    setExampleLoaded(false);
     setKeywords((prev) => {
       const next = [...prev];
       next[index] = value;
@@ -308,6 +310,7 @@ export default function Home() {
   }, []);
 
   const clearKeyword = useCallback((index: number) => {
+    setExampleLoaded(false);
     setKeywords((prev) => {
       const next = [...prev];
       next[index] = "";
@@ -316,6 +319,7 @@ export default function Home() {
   }, []);
 
   const addSuggestion = useCallback((word: string) => {
+    setExampleLoaded(false);
     setKeywords((prev) => {
       if (prev.some((k) => k.toLowerCase().trim() === word.toLowerCase())) return prev;
       const emptyIndex = prev.findIndex((k, i) => !ANCHOR_SLOTS[i] && !k.trim());
@@ -344,12 +348,14 @@ export default function Home() {
   const handleReset = useCallback(() => {
     setKeywords(Array(TOTAL_KEYWORDS).fill(""));
     setStory("");
+    setExampleLoaded(false);
     toast({ title: "Cleared", description: "A blank page. Begin again." });
   }, [toast]);
 
   const loadExample = useCallback(() => {
     setKeywords([...EXAMPLE_KEYWORDS]);
     setStory(EXAMPLE_STORY);
+    setExampleLoaded(true);
     toast({
       title: "A perfect example",
       description: "Don McLean — anchored, honest, and woven into 150 characters.",
@@ -589,7 +595,10 @@ export default function Home() {
                 data-testid="textarea-story"
                 placeholder="Open with a hook, name the change you bring, land on the payoff — all in one breath."
                 value={story}
-                onChange={(e) => setStory(e.target.value.slice(0, MAX_STORY_LENGTH))}
+                onChange={(e) => {
+                  setExampleLoaded(false);
+                  setStory(e.target.value.slice(0, MAX_STORY_LENGTH));
+                }}
                 className={`flex-1 min-h-[190px] resize-none text-lg leading-relaxed bg-transparent transition-all duration-300 ${
                   isSuccess ? "border-success/60" : ""
                 }`}
@@ -659,13 +668,28 @@ export default function Home() {
                   size="sm"
                   onClick={() => saveMutation.mutate()}
                   disabled={!story.trim() || saveMutation.isPending}
+                  className={
+                    isSuccess && !exampleLoaded
+                      ? "animate-pulse-glow ring-2 ring-success/70"
+                      : ""
+                  }
                 >
                   <Save className="w-4 h-4 mr-2" />
                   {saveMutation.isPending ? "Saving…" : "Save"}
                 </Button>
-                <Button data-testid="button-reset" variant="ghost" size="sm" onClick={handleReset}>
+                <Button
+                  data-testid="button-reset"
+                  variant={exampleLoaded ? "default" : "outline"}
+                  size="sm"
+                  onClick={handleReset}
+                  className={
+                    exampleLoaded
+                      ? "ring-2 ring-primary/50 shadow-[0_0_18px_hsl(38_92%_50%/0.4)]"
+                      : ""
+                  }
+                >
                   <RotateCcw className="w-4 h-4 mr-2" />
-                  Reset
+                  {exampleLoaded ? "Clear example" : "Reset"}
                 </Button>
               </div>
             </Card>
@@ -824,7 +848,10 @@ export default function Home() {
             story={story}
             keywords={keywords.filter((k) => k.trim())}
             aiEnabled={aiEnabled}
-            onApplyRewrite={(rewrite) => setStory(rewrite.slice(0, MAX_STORY_LENGTH))}
+            onApplyRewrite={(rewrite) => {
+              setExampleLoaded(false);
+              setStory(rewrite.slice(0, MAX_STORY_LENGTH));
+            }}
           />
         </section>
 

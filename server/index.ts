@@ -34,6 +34,8 @@ app.use((_req, res, next) => {
     res.setHeader("Cross-Origin-Opener-Policy", "same-origin");
     res.setHeader("Cross-Origin-Resource-Policy", "same-origin");
     res.setHeader("X-Permitted-Cross-Domain-Policies", "none");
+    const replitOrigins =
+      "https://replit.com https://*.replit.com https://*.replit.dev https://*.replit.app";
     res.setHeader(
       "Content-Security-Policy",
       [
@@ -41,11 +43,12 @@ app.use((_req, res, next) => {
         "base-uri 'self'",
         "object-src 'none'",
         "frame-ancestors 'none'",
-        "img-src 'self' data: blob:",
-        "script-src 'self'",
+        `img-src 'self' data: blob: ${replitOrigins}`,
+        `script-src 'self' ${replitOrigins}`,
         "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
         "font-src 'self' https://fonts.gstatic.com",
-        "connect-src 'self'",
+        `connect-src 'self' ${replitOrigins}`,
+        `frame-src 'self' ${replitOrigins}`,
         "form-action 'self'",
         "upgrade-insecure-requests",
       ].join("; "),
