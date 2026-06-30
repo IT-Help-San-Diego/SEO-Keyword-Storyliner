@@ -103,7 +103,7 @@ const PRINCIPLES = [
   {
     icon: MapPin,
     title: "Everything matches",
-    body: "It starts the day you form the LLC or C-corp: the IRS records your exact legal name — and they mean it, down to the spelling and the spacing. Use that same name everywhere, with the same logo, colors, photos, and descriptions, and the legitimate parts of the internet recognize you, match you up, and treat you like the bigger, real brand you are.",
+    body: "Pick the one real-world name people actually call you, and spell it identically everywhere — same spacing, same logo, colors, photos, and descriptions. You don't slap 'LLC' on everything; you just put your exact registered legal name where it's official — your footer and your business listings — so the directories that vouch for real companies match you to the record and start treating you like the bigger, real brand you are.",
   },
   {
     icon: Moon,

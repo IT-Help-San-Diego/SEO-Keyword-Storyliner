@@ -43,12 +43,15 @@ about keywords again.
 
 ## How to choose the eight keywords
 
-- Everything matches. It begins the day you register the business: the IRS records
-  your exact legal name, down to the spelling and the spacing, and they mean it.
-  Use that same name everywhere, paired with the same logo, colors, photos, and
-  short descriptions, across your site, your listings, and every profile. The
-  legitimate parts of the internet that vouch for real businesses then recognize
-  you, match you up, and you read like the bigger, established brand you are.
+- Everything matches. Pick the one real-world name people actually call you and
+  spell it identically everywhere — same spacing, same logo, colors, photos, and
+  short descriptions, across your site, your listings, and every profile. You do
+  not need to put "LLC" or "Inc." on everything; in fact Google discourages legal
+  suffixes in your Business Profile name. Instead, place your exact registered legal
+  name (the IRS version, spelling and spacing intact) where it is official: your
+  website footer, your contracts, and your business registrations. That lets the
+  directories that vouch for real companies match you to the official record, and
+  you start to read like the bigger, established brand you are.
 - The 2 a.m. test. Picture a stranger, alone in the dark, typing into a search
   bar to solve the exact problem you fix. The words they type are your keywords —
   not the words you wish they would use.
