@@ -25,6 +25,7 @@ import {
   Anchor,
   Sparkles,
   Wand2,
+  Download,
 } from "lucide-react";
 import { DancingUnicorns } from "@/components/dancing-unicorns";
 import { StoryCoachPanel } from "@/components/story-coach-panel";
@@ -407,6 +408,45 @@ export default function Home() {
     });
   }, [story, toast]);
 
+  const handleExportTxt = useCallback(() => {
+    const lower = story.toLowerCase();
+    const filled = keywords.map((k) => k.trim()).filter(Boolean);
+    const lines: string[] = [
+      "STORYLINER — BRAND STORY",
+      "========================",
+      "",
+      story.trim() || "(no story yet)",
+      "",
+      `— ${story.length} / ${MAX_STORY_LENGTH} characters`,
+      "",
+    ];
+    if (filled.length) {
+      lines.push("KEYWORDS  ([x] = woven into the story)", "----------------------------------------");
+      for (const k of filled) {
+        lines.push(`${lower.includes(k.toLowerCase()) ? "[x]" : "[ ]"} ${k}`);
+      }
+      lines.push("");
+    }
+    lines.push(`Exported from Storyliner · ${new Date().toLocaleDateString()}`);
+
+    const blob = new Blob([lines.join("\n")], { type: "text/plain;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const slug =
+      (keywords[1] || "brand")
+        .trim()
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/^-+|-+$/g, "") || "brand";
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `${slug}-story.txt`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    toast({ title: "Exported", description: "Saved your brand story as a .txt file." });
+  }, [story, keywords, toast]);
+
   const handleReset = useCallback(() => {
     if (exampleLoaded && preExampleDraft.current) {
       const restored = preExampleDraft.current;
@@ -777,6 +817,16 @@ export default function Home() {
                 >
                   <Copy className="w-4 h-4 mr-2" />
                   Copy
+                </Button>
+                <Button
+                  data-testid="button-export-txt"
+                  variant="outline"
+                  size="sm"
+                  onClick={handleExportTxt}
+                  disabled={!story.trim()}
+                >
+                  <Download className="w-4 h-4 mr-2" />
+                  Export .txt
                 </Button>
                 <Button
                   data-testid="button-save"
