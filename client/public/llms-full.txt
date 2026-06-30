@@ -41,6 +41,16 @@ actually finds you, it earns a slot, like it or not. The eight keywords are the
 chunks that make you what you are. Name them honestly and you will rarely think
 about keywords again.
 
+## The anchor keyword (slot #1)
+
+The first of the eight slots is special — it is the anchor. Your brand name is a
+keyword too (a "branded keyword"), but a stranger who needs you does not yet know
+your name; they search by the problem, not by you. So the anchor pairs both: your
+core identity tied to your name — what you are plus who you are, for example
+"IT support, San Diego — IT Help San Diego." It is the one slot where your name
+belongs, so the moment someone finds you by category, your name binds to it. The
+remaining seven slots are the discovery words real strangers type at 2 a.m.
+
 ## How to choose the eight keywords
 
 - Everything matches. Pick the one real-world name people actually call you and

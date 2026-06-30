@@ -22,6 +22,7 @@ import {
   ArrowRight,
   MapPin,
   TriangleAlert,
+  Anchor,
 } from "lucide-react";
 import { DancingUnicorns } from "@/components/dancing-unicorns";
 import { StoryCoachPanel } from "@/components/story-coach-panel";
@@ -49,11 +50,12 @@ interface KeywordSlotProps {
   index: number;
   value: string;
   matched: boolean;
+  isAnchor?: boolean;
   onChange: (value: string) => void;
   onClear: () => void;
 }
 
-function KeywordSlot({ index, value, matched, onChange, onClear }: KeywordSlotProps) {
+function KeywordSlot({ index, value, matched, isAnchor = false, onChange, onClear }: KeywordSlotProps) {
   const filled = value.trim().length > 0;
   return (
     <div
@@ -62,13 +64,22 @@ function KeywordSlot({ index, value, matched, onChange, onClear }: KeywordSlotPr
         matched
           ? "border-primary/60 bg-primary/10 shadow-[0_0_16px_hsl(36_54%_61%/0.18)]"
           : filled
-            ? "border-card-border bg-card"
-            : "border-dashed border-border bg-muted/20"
+            ? isAnchor
+              ? "border-primary/50 bg-primary/[0.06]"
+              : "border-card-border bg-card"
+            : isAnchor
+              ? "border-primary/40 bg-primary/[0.05]"
+              : "border-dashed border-border bg-muted/20"
       }`}
     >
       <div className="flex items-center justify-between mb-1">
-        <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
-          {String(index + 1).padStart(2, "0")}
+        <span
+          className={`font-mono text-[10px] uppercase tracking-[0.18em] flex items-center gap-1 ${
+            isAnchor ? "text-primary" : "text-muted-foreground"
+          }`}
+        >
+          {isAnchor && <Anchor className="w-3 h-3" />}
+          {isAnchor ? "Anchor" : String(index + 1).padStart(2, "0")}
         </span>
         {matched ? (
           <Check className="w-3.5 h-3.5 text-primary" />
@@ -83,18 +94,23 @@ function KeywordSlot({ index, value, matched, onChange, onClear }: KeywordSlotPr
             <X className="w-3.5 h-3.5" />
           </button>
         ) : (
-          <Plus className="w-3.5 h-3.5 text-muted-foreground/40" />
+          <Plus className={`w-3.5 h-3.5 ${isAnchor ? "text-primary/40" : "text-muted-foreground/40"}`} />
         )}
       </div>
       <Input
         data-testid={`input-keyword-${index}`}
-        placeholder="keyword"
+        placeholder={isAnchor ? "what you are + your name" : "keyword"}
         value={value}
         onChange={(e) => onChange(e.target.value)}
         className={`h-8 border-0 bg-transparent px-0 text-sm font-medium focus-visible:ring-0 ${
           matched ? "text-primary" : ""
         }`}
       />
+      {isAnchor && !filled && (
+        <p className="font-mono text-[9px] leading-tight text-primary/60">
+          your core identity, tied to your name
+        </p>
+      )}
     </div>
   );
 }
@@ -227,11 +243,14 @@ export default function Home() {
   const addSuggestion = useCallback((word: string) => {
     setKeywords((prev) => {
       if (prev.some((k) => k.toLowerCase().trim() === word.toLowerCase())) return prev;
-      const emptyIndex = prev.findIndex((k) => !k.trim());
+      const emptyIndex = prev.findIndex((k, i) => i !== 0 && !k.trim());
       if (emptyIndex === -1) {
+        const anchorOpen = !prev[0].trim();
         toast({
-          title: "All slots full",
-          description: "Clear a slot to add a new keyword.",
+          title: anchorOpen ? "Only the anchor is open" : "All slots full",
+          description: anchorOpen
+            ? "Slot 1 is your anchor — type your core identity and name by hand."
+            : "Clear a slot to add a new keyword.",
         });
         return prev;
       }
@@ -275,6 +294,7 @@ export default function Home() {
           index={index}
           value={keywords[index]}
           matched={!!match?.matched}
+          isAnchor={index === 0}
           onChange={(v) => updateKeyword(index, v)}
           onClear={() => clearKeyword(index)}
         />
