@@ -103,7 +103,7 @@ const PRINCIPLES = [
   {
     icon: MapPin,
     title: "Everything matches",
-    body: "Your name, your address, what you actually do — identical everywhere a person or a search engine looks. When it all lines up, you read as real, and being found takes care of itself.",
+    body: "It starts the day you form the LLC or C-corp: the IRS records your exact legal name — and they mean it, down to the spelling and the spacing. Use that same name everywhere, with the same logo, colors, photos, and descriptions, and the legitimate parts of the internet recognize you, match you up, and treat you like the bigger, real brand you are.",
   },
   {
     icon: Moon,
