@@ -233,9 +233,9 @@ export default function Home() {
   const [story, setStory] = useState(() =>
     initialDraft ? initialDraft.story.slice(0, MAX_STORY_LENGTH) : "",
   );
-  const [draftStatus, setDraftStatus] = useState<"none" | "restored" | "saved">(
-    initialHasContent ? "restored" : "none",
-  );
+  const [draftStatus, setDraftStatus] = useState<
+    "none" | "restored" | "saved" | "failed"
+  >(initialHasContent ? "restored" : "none");
   const [suggestions, setSuggestions] = useState<string[]>([]);
   const [loadingSuggest, setLoadingSuggest] = useState(false);
   const [suggestMode, setSuggestMode] = useState<"story" | "related">("story");
@@ -311,7 +311,7 @@ export default function Home() {
         story.trim().length > 0 || keywords.some((k) => k.trim().length > 0);
       if (hasContent) {
         const ok = saveDraft({ story, keywords });
-        setDraftStatus(ok ? "saved" : "none");
+        setDraftStatus(ok ? "saved" : "failed");
       } else {
         clearDraft();
         setDraftStatus("none");
@@ -430,6 +430,7 @@ export default function Home() {
   }, [exampleLoaded, toast]);
 
   const loadExample = useCallback(() => {
+    if (exampleLoaded) return;
     const hasContent =
       story.trim().length > 0 || keywords.some((k) => k.trim().length > 0);
     preExampleDraft.current = hasContent ? { story, keywords: [...keywords] } : null;
@@ -442,7 +443,7 @@ export default function Home() {
         ? "Don McLean — your own draft is safe; hit Clear example to bring it back."
         : "Don McLean — anchored, honest, and woven into 150 characters.",
     });
-  }, [story, keywords, toast]);
+  }, [exampleLoaded, story, keywords, toast]);
 
   const scrollToWorkshop = useCallback(() => {
     document
@@ -588,6 +589,7 @@ export default function Home() {
               variant="outline"
               size="sm"
               onClick={loadExample}
+              disabled={exampleLoaded}
               className="border-primary/50 text-primary hover:text-primary"
             >
               <Sparkles className="w-4 h-4 mr-2" />
@@ -751,6 +753,11 @@ export default function Home() {
                   <>
                     <Check className="w-3 h-3 text-success" />
                     saved on this device
+                  </>
+                ) : draftStatus === "failed" ? (
+                  <>
+                    <TriangleAlert className="w-3 h-3 text-destructive" />
+                    couldn't save in this browser — copy your story to be safe
                   </>
                 ) : (
                   <>
