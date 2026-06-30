@@ -1,0 +1,1 @@
+- [BYO AI endpoint + free coach](byo-ai-endpoint.md) — AI is optional (env-gated OpenAI-compatible endpoint); free fallbacks are rule-based coach + Datamuse; proxy routes are rate-limited.

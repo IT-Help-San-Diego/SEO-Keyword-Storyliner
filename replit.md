@@ -2,7 +2,17 @@
 
 ## Overview
 
-Storyliner is a brand story crafting tool that helps users create SEO-optimized brand descriptions with real-time keyword tracking. Users input 8 SEO keywords and write a 160-character brand story, with visual feedback showing which keywords are incorporated into their narrative.
+Storyliner is a brand story crafting tool that helps users create SEO-optimized brand descriptions with real-time keyword tracking. The story sits centered as the "window," with 8 keyword slots framing the sides. Users write a 160-character brand story (SEO meta length) and get live feedback as keywords appear. Clickable suggestion chips (free, from the Datamuse API) drop keywords into open slots. A built-in, rule-based Story Coach gives Aristotelian guidance — story arc (hook/tension/payoff) plus ethos/pathos/logos meters — and a free offline thesaurus helps tighten wording. Dancing unicorns celebrate when 6+ of 8 keywords are woven in.
+
+## Optional AI (no managed/paid provider required)
+
+AI coaching is optional and off by default — the free rule-based coach always works. To enable real AI rewrites, set these environment variables to any OpenAI-compatible endpoint (LM Studio, Ollama, llama.cpp, Google Gemini free tier, or Groq):
+
+- `AI_BASE_URL` — e.g. `https://generativelanguage.googleapis.com/v1beta/openai` (Gemini) or your self-hosted server's base URL
+- `AI_MODEL` — the model name to request
+- `AI_API_KEY` — optional bearer token (a free Gemini/Groq key works)
+
+When set, `/api/ai/status` reports enabled and the UI exposes "Get AI rewrite." The server calls `{AI_BASE_URL}/chat/completions` directly (no SDK). Note: the model must be reachable from the deployment — `localhost` endpoints won't work in production.
 
 ## User Preferences
 
