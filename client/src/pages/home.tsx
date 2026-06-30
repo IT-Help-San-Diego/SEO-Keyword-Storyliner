@@ -178,7 +178,7 @@ function KeywordSlot({ index, value, matched, anchor, onChange, onClear }: Keywo
       </div>
       <Input
         data-testid={`input-keyword-${index}`}
-        placeholder={anchor ? anchor.placeholder : "keyword"}
+        placeholder={anchor ? anchor.placeholder : "keyword or hashtag"}
         value={value}
         onChange={(e) => onChange(e.target.value)}
         className={`h-8 border-0 bg-transparent px-0 text-sm font-medium focus-visible:ring-0 ${
