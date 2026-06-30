@@ -255,8 +255,7 @@ export function StoryCoachPanel({
         {aiEnabled ? (
           <>
             <p className="text-[11px] text-muted-foreground mb-2.5">
-              Rewrites your whole story in 160 characters or fewer using your configured AI
-              endpoint.
+              Rewrites your whole story to fit under 160 characters, weaving in your keywords.
             </p>
             <Button
               size="sm"
@@ -299,7 +298,7 @@ export function StoryCoachPanel({
             )}
             {aiCoach.isError && (
               <p className="text-xs text-destructive mt-2">
-                AI request failed. Check your endpoint settings.
+                The AI couldn't respond right now. The free Story Coach above still works.
               </p>
             )}
           </>
@@ -307,8 +306,8 @@ export function StoryCoachPanel({
           <div className="flex items-start gap-2 text-xs text-muted-foreground">
             <Wand2 className="w-3.5 h-3.5 mt-0.5 shrink-0" />
             <span>
-              AI rewrites are off — you're using the free built-in coach. Add a free Gemini key
-              or your own LM Studio/Ollama endpoint to turn on whole-story AI rewrites.
+              AI rewrites are turned off right now — the free Story Coach above still does the
+              work.
             </span>
           </div>
         )}
