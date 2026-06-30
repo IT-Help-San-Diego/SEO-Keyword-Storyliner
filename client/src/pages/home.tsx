@@ -31,6 +31,7 @@ import { StoryCoachPanel } from "@/components/story-coach-panel";
 import { analyzeStory } from "@/lib/story-coach";
 import { useToast } from "@/hooks/use-toast";
 import { apiRequest } from "@/lib/queryClient";
+import { loadDraft, saveDraft, clearDraft } from "@/lib/draft-storage";
 import aristotleImg from "@assets/generated_images/aristotle_engraving.png";
 
 const MAX_STORY_LENGTH = 160;
@@ -215,12 +216,31 @@ const APPEALS_EXPLAINED = [
 ];
 
 export default function Home() {
-  const [keywords, setKeywords] = useState<string[]>(Array(TOTAL_KEYWORDS).fill(""));
-  const [story, setStory] = useState("");
+  const initialDraft = useMemo(() => loadDraft(), []);
+  const initialHasContent =
+    !!initialDraft &&
+    (initialDraft.story.trim().length > 0 ||
+      initialDraft.keywords.some((k) => k.trim().length > 0));
+
+  const [keywords, setKeywords] = useState<string[]>(() => {
+    if (initialDraft) {
+      const k = initialDraft.keywords.slice(0, TOTAL_KEYWORDS);
+      while (k.length < TOTAL_KEYWORDS) k.push("");
+      return k;
+    }
+    return Array(TOTAL_KEYWORDS).fill("");
+  });
+  const [story, setStory] = useState(() =>
+    initialDraft ? initialDraft.story.slice(0, MAX_STORY_LENGTH) : "",
+  );
+  const [draftStatus, setDraftStatus] = useState<"none" | "restored" | "saved">(
+    initialHasContent ? "restored" : "none",
+  );
   const [suggestions, setSuggestions] = useState<string[]>([]);
   const [loadingSuggest, setLoadingSuggest] = useState(false);
   const [suggestMode, setSuggestMode] = useState<"story" | "related">("story");
   const [exampleLoaded, setExampleLoaded] = useState(false);
+  const preExampleDraft = useRef<{ story: string; keywords: string[] } | null>(null);
   const { toast } = useToast();
 
   const { data: aiStatus } = useQuery<{ enabled: boolean; provider: string | null }>({
