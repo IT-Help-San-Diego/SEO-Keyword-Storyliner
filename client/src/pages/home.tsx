@@ -158,7 +158,7 @@ function KeywordSlot({ index, value, matched, anchor, onChange, onClear }: Keywo
           }`}
         >
           {isAnchor && <Anchor className="w-3 h-3 shrink-0" />}
-          {anchor ? anchor.label : String(index + 1).padStart(2, "0")}
+          {anchor ? anchor.label : `# ${String(index + 1).padStart(2, "0")}`}
         </span>
         {matched ? (
           <Check className="w-3.5 h-3.5 text-primary shrink-0" />
