@@ -248,22 +248,19 @@ export function StoryCoachPanel({
       <div className="pt-4 border-t border-border">
         <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-muted-foreground mb-2 flex items-center gap-1.5">
           <Wand2 className="w-3.5 h-3.5" /> AI rewrite
-          <span className="normal-case tracking-normal text-[10px] font-medium text-primary bg-primary/10 rounded-full px-2 py-0.5">
-            Coming soon
-          </span>
         </p>
         {aiEnabled ? (
           <>
             <p className="text-[11px] text-muted-foreground mb-2.5">
-              Rewrites your whole story to fit under 160 characters, weaving in your keywords. Not
-              available just yet — the free Story Coach above does the work for now.
+              Rewrites your whole story to fit under 160 characters, weaving in your keywords. Your
+              draft is sent to the AI only when you click.
             </p>
             <Button
               size="sm"
               variant="default"
               className="w-full"
               onClick={() => aiCoach.mutate()}
-              disabled
+              disabled={aiCoach.isPending}
               data-testid="button-ai-coach"
             >
               {aiCoach.isPending ? (
@@ -271,7 +268,7 @@ export function StoryCoachPanel({
               ) : (
                 <Wand2 className="w-4 h-4 mr-2" />
               )}
-              {aiCoach.isPending ? "Thinking…" : "Coming soon"}
+              {aiCoach.isPending ? "Thinking…" : "Get AI rewrite"}
             </Button>
             {aiCoach.data?.tips && aiCoach.data.tips.length > 0 && (
               <ul className="space-y-1.5 mt-3">
