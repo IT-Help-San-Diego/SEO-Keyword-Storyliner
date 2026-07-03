@@ -252,8 +252,21 @@ export function StoryCoachPanel({
         {aiEnabled ? (
           <>
             <p className="text-[11px] text-muted-foreground mb-2.5">
-              Rewrites your whole story to fit under 160 characters, weaving in your keywords. Your
-              draft is sent to the AI only when you click.
+              Full disclosure: the AI is an actor, not an authority — it samples what a human
+              might plausibly say. We brief it hard before it speaks: stay under 160 characters,
+              weave in your words, keep Aristotle's three appeals and the hook–turn–payoff, no
+              hype. Run your{" "}
+              <a
+                href="https://organiccomputer.me"
+                target="_blank"
+                rel="noopener noreferrer"
+                data-testid="link-organic-computer"
+                className="underline decoration-primary/40 underline-offset-2 hover:text-primary transition-colors"
+              >
+                organic computer
+              </a>
+              's version against the silicon version, and keep whichever is truer. Your draft is
+              sent only when you click.
             </p>
             <Button
               size="sm"
@@ -282,6 +295,9 @@ export function StoryCoachPanel({
             )}
             {aiCoach.data?.rewrite && (
               <div className="mt-3 rounded-md bg-primary/5 border border-primary/20 p-3">
+                <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-muted-foreground mb-1.5">
+                  The silicon version
+                </p>
                 <p className="text-sm text-foreground italic">"{aiCoach.data.rewrite}"</p>
                 <Button
                   size="sm"

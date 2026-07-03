@@ -17,6 +17,11 @@ Storyliner is one project under **intellectualresistance.com** (the umbrella ove
 
 The point of Storyliner (per the user) is to teach **real, organic strategy** so a brand thinks correctly *before* it ever reaches for paid ads or a "shitty SEO company." The enemy is paying-to-cheat; the resistance is understanding the method. So copy/features should keep showing the *why* (the reasoning behind honest discovery), favor organic levers over paid/gimmick ones, and never imply you must buy your way to visibility. This is the throughline of the whole Intellectual Resistance umbrella.
 
+# "Organic computer vs. silicon version" — the AI framing
+
+The house metaphor for AI features: the visitor's brain is the **organic computer** (echoes sibling site organiccomputer.me — the AI-rewrite disclosure links the phrase there), the AI's output is the **silicon version**. Disclosure doctrine: brutally epistemic — the AI is *an actor, not an authority*; it *samples what a human might plausibly say*; reveal the briefing (under 160 chars, weave the words, three appeals, hook–turn–payoff, no hype — only claim what the system prompt actually enforces); tell users to run their organic version against the silicon one and *keep whichever is truer*.
+**Why:** user wants disclosure to teach the method and push the umbrella theme, never to sell AI as oracle.
+
 # Footer lineage echo
 
 The bottom of `home.tsx` has a deliberately **subtle** echo of IR.com's footer "corporate tree" (their tree: Delaware → California → Research Dept · Intellectual Resistance · IT Help San Diego → project grid). Storyliner's version is intentionally minimal — just `Intellectual Resistance` (link) → thin vertical line → `Storyliner` node.
