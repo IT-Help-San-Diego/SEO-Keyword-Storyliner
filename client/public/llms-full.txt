@@ -2,7 +2,7 @@
 
 > seo-keyword-storyteller.replit.app — a free tool for writing the foundational
 > story of a brand in 160 characters, the length of an SEO meta description. It is
-> built on nearly 2,400 years of logic from Aristotle and engineered like a Disney story,
+> built on nearly 2,400 years of logic from Aristotle and engineered like a screenplay,
 > not decorated. A rule-based Story Coach always works offline and for free; an
 > optional AI rewrite can be wired to any OpenAI-compatible endpoint. Authored by
 > Carey Balboa, founder of IT Help San Diego Inc. ORCID 0009-0000-5237-9065.

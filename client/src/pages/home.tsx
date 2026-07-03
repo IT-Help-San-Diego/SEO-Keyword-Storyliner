@@ -573,7 +573,7 @@ export default function Home() {
               This is the part almost everyone skips. A real brand begins with a single,
               deliberate statement — who you are, what you believe, and the exact words a
               stranger would type to find you: the keywords that surface you in search and the
-              hashtags that can improve discovery on social. We build it the way a Disney writers' room
+              hashtags that can improve discovery on social. We build it the way a writers' room
               engineers a film — a hook, a turn, a payoff — using{" "}
               <span className="text-foreground font-medium">nearly 2,400 years of logic</span> from
               Aristotle, compressed into 160 characters.
@@ -1111,7 +1111,7 @@ export default function Home() {
           <div className="order-1 lg:order-none">
             <Eyebrow>The method · nearly 2,400 years of logic</Eyebrow>
             <h2 className="font-display text-2xl sm:text-3xl font-bold mt-4 text-foreground">
-              Disney didn't invent this. They borrowed it.
+              Hollywood didn't invent this. It borrowed it.
             </h2>
             <p className="mt-3 text-muted-foreground leading-relaxed">
               Every story that moves people stands on three appeals and one shape. Your 160
