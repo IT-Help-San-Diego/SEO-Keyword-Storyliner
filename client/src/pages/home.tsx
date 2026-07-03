@@ -948,13 +948,13 @@ export default function Home() {
             </h2>
             <p className="mt-3 text-muted-foreground leading-relaxed">
               Here's the part almost everyone forgets: you don't have to chase keywords. Be
-              honestly, publicly who you say you are — at the address you list, reachable for
+              who you say you are, honestly and publicly — at the address you list, reachable for
               exactly what you offer — and everything lines up. Google can simply show you to the
               people already looking. Keywords aren't a bet on the market; they're just you, said
               plainly.
             </p>
             <p className="mt-3 text-muted-foreground leading-relaxed">
-              But honest cuts both ways. The thing you're known for may not be the thing you wish
+              But honesty cuts both ways. The thing you're known for may not be the thing you wish
               you were known for — and that's the reality check. If it's how the world finds you,
               it earns a slot, like it or not. These eight words are the chunks that make you what
               you are. Name them honestly, and you'll rarely think about keywords again.
