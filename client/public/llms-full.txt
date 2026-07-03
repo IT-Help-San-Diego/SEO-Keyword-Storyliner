@@ -112,13 +112,19 @@ that does not get taken away.
 - The story must stay at or under 160 characters (SEO meta description length).
 - Exactly eight keyword slots.
 - No login, no tracking, no payment required to use the core tool.
-- Privacy by architecture: no cookies, no accounts, no analytics, and no server-side
-  database — drafts persist only in the visitor's own browser (localStorage).
+- Privacy by architecture: no cookies, no accounts, and no server-side storage of
+  anyone's words — drafts persist only in the visitor's own browser (localStorage).
   The rule-based coach and "From my story" suggestions run entirely client-side.
   "Related words" passes the draft through the server transiently to query the
-  public Datamuse dictionary; nothing is stored. The optional AI rewrite sends the
-  story to the configured AI provider only when the visitor explicitly clicks it,
+  public Datamuse dictionary; nothing is written down. The optional AI rewrite sends
+  the story to the configured AI provider only when the visitor explicitly clicks it,
   and content-bearing responses are excluded from server logs.
+- Anonymous milestone tallies only: the site keeps turnstile-style counters (how many
+  stories were coached, lit each of the three appeals, lit all three, or made the
+  unicorns dance). These are computed in the visitor's browser and sent as booleans —
+  no words and no identifiers are ever written to the database or logs. (IP addresses
+  pass transiently through an in-memory rate limiter to stop flooding; they expire
+  within a minute and are never persisted.)
 
 ## Author and related work
 

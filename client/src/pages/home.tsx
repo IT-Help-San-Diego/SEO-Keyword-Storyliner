@@ -1,5 +1,6 @@
 import { useState, useMemo, useCallback, useEffect, useRef } from "react";
 import { useQuery } from "@tanstack/react-query";
+import { queryClient } from "@/lib/queryClient";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -316,6 +317,52 @@ export default function Home() {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // Anonymous milestone tally — a turnstile click, never words. Each milestone
+  // fires at most once per browser session, computed entirely client-side, and
+  // never while the perfect example is loaded (that would pollute the count).
+  const { data: tally } = useQuery<Record<string, number>>({
+    queryKey: ["/api/stats"],
+  });
+  const statsSent = useRef<Set<string>>(new Set());
+  useEffect(() => {
+    if (exampleLoaded) return;
+    const handle = setTimeout(() => {
+      const events: string[] = [];
+      const mark = (event: string, hit: boolean) => {
+        if (!hit || statsSent.current.has(event)) return;
+        try {
+          if (sessionStorage.getItem(`storyliner-stat-${event}`)) {
+            statsSent.current.add(event);
+            return;
+          }
+          sessionStorage.setItem(`storyliner-stat-${event}`, "1");
+        } catch {
+          /* private-mode storage failures never block the tool */
+        }
+        statsSent.current.add(event);
+        events.push(event);
+      };
+      const litCount = coach.appeals.filter((a) => a.level > 0).length;
+      mark("stories_coached", story.trim().length >= 40);
+      for (const a of coach.appeals) mark(`${a.key}_lit`, a.level > 0);
+      mark("all_three_lit", litCount === 3);
+      mark("unicorns_danced", isSuccess);
+      if (events.length > 0) {
+        fetch("/api/stats/event", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          credentials: "omit",
+          body: JSON.stringify({ events }),
+        })
+          .then(() => queryClient.invalidateQueries({ queryKey: ["/api/stats"] }))
+          .catch(() => {
+            /* tally is best-effort; the tool never depends on it */
+          });
+      }
+    }, 2000);
+    return () => clearTimeout(handle);
+  }, [story, coach, isSuccess, exampleLoaded]);
 
   useEffect(() => {
     if (suggestMode !== "related") {
@@ -1134,11 +1181,15 @@ export default function Home() {
                 },
                 {
                   k: "\u201cRelated words\u201d reads your draft once, keeps nothing.",
-                  v: "If you switch to related-word suggestions, your draft passes through our server only to pick seed words for a free public dictionary (Datamuse). Nothing is written down — there is no database to write to.",
+                  v: "If you switch to related-word suggestions, your draft passes through our server only to pick seed words for a free public dictionary (Datamuse). Nothing is written down — no table anywhere holds anyone's words.",
                 },
                 {
                   k: "AI rewrite happens only when you ask.",
                   v: "Only when you click it does your story travel to the AI model for one answer. We keep no copy along the way — not even in our server logs.",
+                },
+                {
+                  k: "We count milestones, never people.",
+                  v: "When a story lights an appeal or the unicorns dance, an anonymous tally goes up by one — like a turnstile click. No words, no names, no way to know whose story it was.",
                 },
               ].map((row) => (
                 <li key={row.k} className="flex gap-3" data-testid={`text-privacy-${row.k.slice(0, 12)}`}>
@@ -1149,8 +1200,19 @@ export default function Home() {
                 </li>
               ))}
             </ul>
+            {tally && (tally.stories_coached ?? 0) > 0 && (
+              <p
+                className="mt-6 text-sm text-muted-foreground leading-relaxed"
+                data-testid="text-anonymous-tally"
+              >
+                The anonymous tally so far: <span className="text-foreground font-medium">{tally.stories_coached.toLocaleString()}</span>{" "}
+                {tally.stories_coached === 1 ? "story" : "stories"} coached ·{" "}
+                <span className="text-foreground font-medium">{(tally.all_three_lit ?? 0).toLocaleString()}</span> lit all three appeals ·{" "}
+                <span className="text-foreground font-medium">{(tally.unicorns_danced ?? 0).toLocaleString()}</span> made the unicorns dance.
+              </p>
+            )}
             <p className="mt-6 font-mono text-[11px] uppercase tracking-[0.14em] text-muted-foreground">
-              nothing stored · nothing sold · nothing to leak
+              no words stored · nothing sold · nothing to leak
             </p>
           </div>
         </section>

@@ -1,7 +1,10 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { z } from "zod";
+import { sql } from "drizzle-orm";
 import { isAIEnabled, aiProviderName, aiChat } from "./ai";
+import { db } from "./db";
+import { statCounters, STAT_EVENTS } from "@shared/schema";
 
 const STOPWORDS = new Set([
   "the", "and", "for", "are", "but", "not", "you", "your", "with", "that",
@@ -69,6 +72,49 @@ export async function registerRoutes(
 ): Promise<Server> {
   // Privacy by architecture: there are intentionally NO routes that store
   // user stories. Drafts live in the visitor's browser (localStorage) only.
+  // The stats routes below count anonymous milestones — booleans computed in
+  // the visitor's browser. No words or identifiers are ever written to the
+  // database or logs. (IPs pass through the in-memory rate limiter only, to
+  // stop flooding — they expire within a minute and never touch disk.)
+
+  app.get("/api/stats", async (_req, res) => {
+    try {
+      const rows = await db.select().from(statCounters);
+      const counts: Record<string, number> = {};
+      for (const e of STAT_EVENTS) counts[e] = 0;
+      for (const r of rows) {
+        if ((STAT_EVENTS as readonly string[]).includes(r.event)) counts[r.event] = r.count;
+      }
+      res.json(counts);
+    } catch {
+      res.status(500).json({ error: "Stats unavailable" });
+    }
+  });
+
+  app.post("/api/stats/event", async (req, res) => {
+    if (rateLimited(`stats:${req.ip}`, 30, 60_000)) {
+      return res.status(429).json({ ok: false });
+    }
+    const parsed = z
+      .object({ events: z.array(z.enum(STAT_EVENTS)).min(1).max(STAT_EVENTS.length) })
+      .safeParse(req.body);
+    if (!parsed.success) return res.status(400).json({ ok: false });
+    const events = Array.from(new Set(parsed.data.events));
+    try {
+      for (const event of events) {
+        await db
+          .insert(statCounters)
+          .values({ event, count: 1 })
+          .onConflictDoUpdate({
+            target: statCounters.event,
+            set: { count: sql`${statCounters.count} + 1` },
+          });
+      }
+      res.json({ ok: true });
+    } catch {
+      res.status(500).json({ ok: false });
+    }
+  });
 
   app.get("/api/ai/status", (_req, res) => {
     res.json({ enabled: isAIEnabled(), provider: aiProviderName() });

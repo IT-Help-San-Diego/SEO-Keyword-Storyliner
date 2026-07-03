@@ -98,7 +98,8 @@ app.use((req, res, next) => {
       // words. Everything else (coach, suggest, thesaurus, and any future
       // content route) is logged without its body — the server should hold
       // no copy of anyone's story, not even in logs.
-      const safeToLogBody = path === "/api/ai/status";
+      const safeToLogBody =
+        path === "/api/ai/status" || path === "/api/stats" || path === "/api/stats/event";
       if (capturedJsonResponse && safeToLogBody) {
         logLine += ` :: ${JSON.stringify(capturedJsonResponse)}`;
       }
