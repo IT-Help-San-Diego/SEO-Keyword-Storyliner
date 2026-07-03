@@ -273,7 +273,7 @@ export function StoryCoachPanel({
               variant="default"
               className="w-full"
               onClick={() => aiCoach.mutate()}
-              disabled={aiCoach.isPending}
+              disabled={aiCoach.isPending || story.trim().length === 0}
               data-testid="button-ai-coach"
             >
               {aiCoach.isPending ? (

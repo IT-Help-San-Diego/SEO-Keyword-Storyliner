@@ -6,5 +6,5 @@
 - [Draft persistence](draft-persistence.md) — draft autosaves to localStorage; autosave pauses while the perfect example is loaded so it never clobbers the user's real words; status must reflect real write success.
 - [Prod CSP + Replit widgets](prod-csp-replit-widgets.md) — the hand-written prod CSP must allow Replit domains or the published-app feedback beacon (and similar injected widgets) won't render.
 - [Perfect example + coach](perfect-example-and-coach.md) — the Don McLean example must light all 3 arc beats + ethos/pathos/logos with real evidence and stay location-free (matching is now word-boundary, see story-coach-honesty).
-- [Keyword/hashtag framing + anchors](keyword-hashtag-framing.md) — slots are "same words, three homes" (search, hashtag, AI's answer); Google AI Mode stats must stay exact+sourced; spell words out, # is accent only; two anchors (what/who) independent.
+- [Keyword/hashtag framing + anchors](keyword-hashtag-framing.md) — "same words, three homes" (search, hashtag, AI's answer); cited stats stay exact+sourced; two anchors independent.
 - [React/TS stack quirks](react-stack-quirks.md) — omit the `fetchpriority` img hint (no spelling passes both tsc+runtime); wrap Map/iterator spreads in `Array.from` (no tsconfig target); HMR "invalid hook call" warnings are transient.
