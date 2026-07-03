@@ -1,3 +1,9 @@
+export const APPEAL_GLYPHS: Record<string, { greek: string; meaning: string }> = {
+  ethos: { greek: "ἦθος", meaning: "character — why they can trust you" },
+  pathos: { greek: "πάθος", meaning: "feeling — why a stranger cares" },
+  logos: { greek: "λόγος", meaning: "logic — the concrete proof" },
+};
+
 export interface ArcBeat {
   key: "hook" | "tension" | "payoff";
   label: string;

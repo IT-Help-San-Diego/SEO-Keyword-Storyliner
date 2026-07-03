@@ -32,7 +32,7 @@ import {
 } from "lucide-react";
 import { DancingUnicorns } from "@/components/dancing-unicorns";
 import { StoryCoachPanel } from "@/components/story-coach-panel";
-import { analyzeStory } from "@/lib/story-coach";
+import { analyzeStory, APPEAL_GLYPHS } from "@/lib/story-coach";
 import { useToast } from "@/hooks/use-toast";
 import { loadDraft, saveDraft, clearDraft } from "@/lib/draft-storage";
 import aristotleImg from "@assets/generated_images/aristotle_engraving.webp";
@@ -509,10 +509,16 @@ export default function Home() {
     });
   }, [exampleLoaded, story, keywords, toast]);
 
+  const [editorArrived, setEditorArrived] = useState(false);
+  const arrivedTimerRef = useRef<number | null>(null);
   const scrollToWorkshop = useCallback(() => {
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     document
-      .getElementById("workshop")
-      ?.scrollIntoView({ behavior: "smooth", block: "start" });
+      .getElementById("story-editor")
+      ?.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "center" });
+    setEditorArrived(true);
+    if (arrivedTimerRef.current !== null) window.clearTimeout(arrivedTimerRef.current);
+    arrivedTimerRef.current = window.setTimeout(() => setEditorArrived(false), 1400);
   }, []);
 
   const storyPicks = useMemo(
@@ -754,11 +760,12 @@ export default function Home() {
             </div>
 
             <Card
+              id="story-editor"
               className={`order-1 lg:order-none p-6 sm:p-7 flex flex-col transition-all duration-500 ${
                 isSuccess
                   ? "border-success/60 shadow-[0_0_36px_hsl(150_50%_45%/0.28)]"
                   : "shadow-xl"
-              }`}
+              } ${editorArrived ? "ring-2 ring-primary/40" : ""}`}
             >
               <div className="flex items-center justify-between mb-4">
                 <h3 className="font-display text-lg font-bold text-foreground">Your brand story</h3>
@@ -923,7 +930,12 @@ export default function Home() {
                   className="rounded-lg border border-border/60 bg-card/40 p-3"
                 >
                   <div className="flex items-center justify-between">
-                    <span className="text-sm font-medium text-foreground">{a.label}</span>
+                    <span className="text-sm font-medium text-foreground flex items-baseline gap-1.5">
+                      {a.label}
+                      <span className="font-serif text-xs text-primary/70">
+                        {APPEAL_GLYPHS[a.key]?.greek}
+                      </span>
+                    </span>
                     <span className="font-mono text-[9px] uppercase tracking-[0.12em] text-muted-foreground">
                       {a.level === 0 ? "—" : `${a.level}/3`}
                     </span>
@@ -938,7 +950,9 @@ export default function Home() {
                     data-testid={`live-appeal-why-${a.key}`}
                     className="mt-1.5 text-[11px] text-muted-foreground leading-snug"
                   >
-                    {a.why}
+                    {a.level === 0
+                      ? `${APPEAL_GLYPHS[a.key]?.meaning} · no signal yet`
+                      : a.why}
                   </p>
                 </div>
               ))}

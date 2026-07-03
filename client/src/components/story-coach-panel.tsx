@@ -16,7 +16,7 @@ import {
   Info,
 } from "lucide-react";
 import { apiRequest } from "@/lib/queryClient";
-import type { CoachResult } from "@/lib/story-coach";
+import { APPEAL_GLYPHS, type CoachResult } from "@/lib/story-coach";
 
 interface StoryCoachPanelProps {
   result: CoachResult;
@@ -144,8 +144,14 @@ export function StoryCoachPanel({
           {result.appeals.map((appeal) => (
             <div key={appeal.key} data-testid={`appeal-${appeal.key}`}>
               <div className="flex items-center justify-between mb-1">
-                <span className="text-sm font-medium text-foreground" title={appeal.blurb}>
+                <span
+                  className="text-sm font-medium text-foreground flex items-baseline gap-1.5"
+                  title={appeal.blurb}
+                >
                   {appeal.label}
+                  <span className="font-serif text-xs text-primary/70">
+                    {APPEAL_GLYPHS[appeal.key]?.greek}
+                  </span>
                 </span>
                 <span className="font-mono text-[9px] uppercase tracking-[0.12em] text-muted-foreground">
                   {appeal.level === 0 ? "no signal" : `${appeal.level}/3`}
@@ -161,7 +167,9 @@ export function StoryCoachPanel({
                 data-testid={`appeal-why-${appeal.key}`}
                 className="text-xs text-muted-foreground mt-1"
               >
-                {appeal.why}
+                {appeal.level === 0
+                  ? `${APPEAL_GLYPHS[appeal.key]?.meaning} · no signal yet`
+                  : appeal.why}
               </p>
             </div>
           ))}
@@ -247,7 +255,7 @@ export function StoryCoachPanel({
 
       <div className="pt-4 border-t border-border">
         <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-muted-foreground mb-2 flex items-center gap-1.5">
-          <Wand2 className="w-3.5 h-3.5" /> AI rewrite
+          <Wand2 className="w-3.5 h-3.5" /> AI rewrite · data sampling
         </p>
         {aiEnabled ? (
           <>
@@ -265,7 +273,9 @@ export function StoryCoachPanel({
               >
                 organic computer
               </a>
-              's version against the silicon version, and keep whichever is truer. Your draft is
+              's version against the silicon version, and keep whichever is truer. That's the
+              honest use of an AI — not outsourcing your thinking, but running your own data
+              through a different machine and cross-checking what comes back. Your draft is
               sent only when you click.
             </p>
             <Button
@@ -296,7 +306,7 @@ export function StoryCoachPanel({
             {aiCoach.data?.rewrite && (
               <div className="mt-3 rounded-md bg-primary/5 border border-primary/20 p-3">
                 <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-muted-foreground mb-1.5">
-                  The silicon version
+                  The silicon version · a data sample
                 </p>
                 <p className="text-sm text-foreground italic">"{aiCoach.data.rewrite}"</p>
                 <Button
