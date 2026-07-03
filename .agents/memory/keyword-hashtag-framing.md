@@ -3,9 +3,13 @@ name: Keyword/hashtag framing + anchor independence
 description: Storyliner's product-voice doctrine for how the 8 slots and 2 anchors are described to users.
 ---
 
-# "Same words, two homes" — keywords AND hashtags
+# "Same words, three homes" — keywords, hashtags, and the words AI quotes
 
-The 8 slots are framed as **both keywords and hashtags**, not one or the other. Copy doctrine: *same words, two homes — keywords in search, hashtags on social.* The `#` symbol is used as a visual accent (slot labels `# 01`…, placeholder "keyword or hashtag"), but the **words must always be spelled out** — a bare symbol is "not communicative enough" (explicit user rule, partly because their dictation tool kept turning the word "hashtag" into "#").
+Copy doctrine: *same words, three homes* — a search bar, a hashtag on social, an AI's answer. The user chose this framing deliberately when AI search went conversational; keep it when writing new copy.
+
+**Why:** Google's AI Mode research shows queries became long conversational questions, which rewards honest stories over word lists — the reframe repositions the same tool without changing its logic.
+
+**How to apply:** any public statistic cited from Google's AI Mode report must be quoted exactly, attributed ("Google reports…"), and linked to the primary source. Never state AI quoting/selection mechanisms as deterministic fact — use tendency language ("gives an AI something to quote", "can find"), never "the AI answers with whoever…". The `#` symbol is a visual accent only; **words must always be spelled out** — a bare symbol is "not communicative enough" (explicit user rule; their dictation tool turns the word "hashtag" into "#").
 
 **Epistemic guardrail (the brand's core value):** never claim keywords and hashtags are the *same mechanism*. Keep verbs honest — keywords "surface you in search"; hashtags "can improve discovery on social" (NOT "surface you on social" / "findable everywhere"). Research backing: keywords ≠ hashtags but converging (Forbes 2026 "keywords replacing hashtags"); 150–160 char meta length is correct; 1–2 woven keywords avoids stuffing.
 

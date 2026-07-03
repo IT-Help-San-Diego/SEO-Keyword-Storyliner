@@ -41,6 +41,23 @@ actually finds you, it earns a slot, like it or not. The eight keywords are the
 chunks that make you what you are. Name them honestly and you will rarely think
 about keywords again.
 
+## AI search changed the question; the honest story is the answer
+
+Search behavior has shifted from short keyword strings toward full conversational
+questions. Google's own research on AI Mode ("How People Are Using AI Mode in the
+U.S.", published on The Keyword blog, May 2026) reports that the average AI Mode
+query is triple the length of a traditional search query, that follow-up queries
+grew more than 40% per month on average, and that among the most common opening
+words are "what," "how," and "I."
+
+Storyliner's position: this shift rewards exactly what the tool coaches. AI
+answers are built from what is already written, and clear, specific wording is
+what an AI can actually quote — so a 160-character story with character (ethos),
+feeling (pathos), and proof (logos) offers more to quote than a list of bait
+words. The eight slots are not a gaming device; they are the honest vocabulary
+of the brand — the same words a search engine matches, a hashtag carries, and an
+AI can find sitting naturally inside the story.
+
 ## The anchor keywords (slots #1 and #2)
 
 The first two of the eight slots are special — together they are the anchor, and

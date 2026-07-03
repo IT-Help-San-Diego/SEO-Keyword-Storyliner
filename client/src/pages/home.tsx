@@ -28,6 +28,7 @@ import {
   Wand2,
   Download,
   ArrowUpRight,
+  Quote,
 } from "lucide-react";
 import { DancingUnicorns } from "@/components/dancing-unicorns";
 import { StoryCoachPanel } from "@/components/story-coach-panel";
@@ -203,7 +204,7 @@ const PRINCIPLES = [
   {
     icon: Moon,
     title: "The 2 a.m. test",
-    body: "Picture a stranger, alone in the dark, typing into a search bar to solve the exact problem you fix. The words they type are your keywords — not the words you wish they'd use.",
+    body: "Picture a stranger, alone in the dark, typing into a search bar — or asking an AI a whole paragraph — to solve the exact problem you fix. The words that describe their problem are your keywords — not the words you wish they'd use.",
   },
   {
     icon: Coins,
@@ -307,16 +308,6 @@ export default function Home() {
     }, 500);
     return () => clearTimeout(handle);
   }, [story, keywords, exampleLoaded]);
-
-  useEffect(() => {
-    if (initialHasContent) {
-      toast({
-        title: "Draft restored",
-        description: "Your words from last time are back on the page.",
-      });
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   // Anonymous milestone tally — a turnstile click, never words. Each milestone
   // fires at most once per browser session, computed entirely client-side, and
@@ -598,8 +589,9 @@ export default function Home() {
             <p className="mt-6 text-base sm:text-lg leading-relaxed text-muted-foreground max-w-xl">
               This is the part almost everyone skips. A real brand begins with a single,
               deliberate statement — who you are, what you believe, and the exact words a
-              stranger would type to find you: the keywords that surface you in search and the
-              hashtags that can improve discovery on social. We build it the way a writers' room
+              stranger would use to find you: typed into a search bar, tagged on social, or
+              asked of an AI as a full question. We build it the
+              way a writers' room
               engineers a film — a hook, a turn, a payoff — using{" "}
               <span className="text-foreground font-medium">nearly 2,400 years of logic</span> from
               Aristotle, compressed into 160 characters.
@@ -665,9 +657,10 @@ export default function Home() {
                 The keywords are the frame. The story is the window.
               </h2>
               <p className="mt-3 text-sm leading-relaxed text-muted-foreground max-w-lg">
-                Same words, two homes — your keywords in a search bar, your hashtags on social.
-                The <span className="text-foreground font-medium">#</span> that makes you
-                more findable across search and social.
+                Same words, three homes — a search bar, a{" "}
+                <span className="text-foreground font-medium">#</span> on social, and the
+                answer an AI assembles when someone asks a full question. A clear story gives
+                an AI something worth quoting; these words are what make it findable.
               </p>
             </div>
             <Button
@@ -963,9 +956,9 @@ export default function Home() {
             <p className="mt-3 text-muted-foreground leading-relaxed">
               Here's the part almost everyone forgets: you don't have to chase keywords. Be
               who you say you are, honestly and publicly — at the address you list, reachable for
-              exactly what you offer — and everything lines up. Google can simply show you to the
-              people already looking. Keywords aren't a bet on the market; they're just you, said
-              plainly.
+              exactly what you offer — and everything lines up. Search engines and AI answers can
+              simply show you to the people already looking. Keywords aren't a bet on the market;
+              they're just you, said plainly.
             </p>
             <p className="mt-3 text-muted-foreground leading-relaxed">
               But honesty cuts both ways. The thing you're known for may not be the thing you wish
@@ -1018,6 +1011,64 @@ export default function Home() {
                 </Card>
               );
             })}
+          </div>
+        </section>
+
+        {/* AI search changed the question */}
+        <section className="py-12 border-t border-border/60">
+          <div className="max-w-2xl">
+            <Eyebrow>The shift · Why a story, not a word list</Eyebrow>
+            <h2 className="font-display text-2xl sm:text-3xl font-bold mt-4 text-foreground">
+              AI search changed the question. The honest story is the answer.
+            </h2>
+            <p className="mt-3 text-muted-foreground leading-relaxed">
+              People used to type three or four words into a search bar. Now, more and more,
+              they ask an AI a whole question — with their situation attached. Google's own
+              research on AI Mode reports that the average AI query is{" "}
+              <span className="text-foreground font-medium">
+                triple the length of a traditional search
+              </span>
+              , that follow-up questions grew more than 40% per month on average, and that
+              among the most common opening words are "what," "how," and{" "}
+              <span className="text-foreground font-medium">"I."</span>{" "}
+              <a
+                href="https://blog.google/products-and-platforms/products/search/ai-mode-us-insights/"
+                target="_blank"
+                rel="noopener noreferrer"
+                data-testid="link-google-ai-mode-report"
+                className="underline decoration-primary/40 underline-offset-4 hover:text-primary transition-colors"
+              >
+                Read Google's report
+              </a>
+              .
+            </p>
+            <p className="mt-3 text-muted-foreground leading-relaxed">
+              That's not a keyword. That's a person talking — and an AI builds its answer from
+              what's already written. Clear, specific wording gives it something to quote; a
+              page stuffed with bait words offers nothing quotable. A 160-character story with
+              character, feeling, and proof does.
+            </p>
+          </div>
+
+          <div
+            data-testid="callout-ai-quotes"
+            className="mt-8 flex gap-4 rounded-lg border border-primary/25 bg-primary/5 p-5 sm:p-6"
+          >
+            <div className="flex items-center justify-center w-9 h-9 shrink-0 rounded-md bg-primary/12 border border-primary/20">
+              <Quote className="w-4 h-4 text-primary" />
+            </div>
+            <div>
+              <h3 className="font-display text-base font-bold text-foreground mb-2">
+                So what are the eight words for, then?
+              </h3>
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                Exactly what they were always for, minus the gaming. They're the honest
+                vocabulary of what you do and who you are — the words a search engine matches,
+                a hashtag carries, and an AI can find sitting naturally inside your story.
+                Nothing here changed because of AI. The word-list shortcut is fading; the
+                story isn't.
+              </p>
+            </div>
           </div>
         </section>
 
