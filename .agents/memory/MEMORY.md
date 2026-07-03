@@ -1,4 +1,6 @@
 - [BYO AI endpoint + free coach](byo-ai-endpoint.md) — AI is optional (env-gated OpenAI-compatible endpoint); free fallbacks are rule-based coach + Datamuse; proxy routes are rate-limited.
+- [Privacy by architecture](privacy-architecture.md) — the page promises no server storage of stories; never reintroduce story-persisting endpoints or body-logging of user words.
+- [Appeals statistics idea](appeals-statistics.md) — user wants to study ethos/pathos/logos statistically someday; must respect the no-storage promise.
 - [Brand: under Intellectual Resistance](brand-intellectual-resistance.md) — Storyliner is a project under intellectualresistance.com; never price it ("free" cheapens), header links to IR, footer has a subtle lineage echo.
 - [Story Coach honesty rules](story-coach-honesty.md) — coach must cite real evidence; lexicon matching must be word-boundary not substring (care≠career); appeals are discrete levels, not fake percentages.
 - [Draft persistence](draft-persistence.md) — draft autosaves to localStorage; autosave pauses while the perfect example is loaded so it never clobbers the user's real words; status must reflect real write success.

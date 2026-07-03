@@ -94,7 +94,12 @@ app.use((req, res, next) => {
     const duration = Date.now() - start;
     if (path.startsWith("/api")) {
       let logLine = `${req.method} ${path} ${res.statusCode} in ${duration}ms`;
-      if (capturedJsonResponse) {
+      // Allowlist: only log response bodies for routes that carry no user
+      // words. Everything else (coach, suggest, thesaurus, and any future
+      // content route) is logged without its body — the server should hold
+      // no copy of anyone's story, not even in logs.
+      const safeToLogBody = path === "/api/ai/status";
+      if (capturedJsonResponse && safeToLogBody) {
         logLine += ` :: ${JSON.stringify(capturedJsonResponse)}`;
       }
 

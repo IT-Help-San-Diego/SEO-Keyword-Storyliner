@@ -1,5 +1,5 @@
 import { useState, useMemo, useCallback, useEffect, useRef } from "react";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -32,7 +32,6 @@ import { DancingUnicorns } from "@/components/dancing-unicorns";
 import { StoryCoachPanel } from "@/components/story-coach-panel";
 import { analyzeStory } from "@/lib/story-coach";
 import { useToast } from "@/hooks/use-toast";
-import { apiRequest } from "@/lib/queryClient";
 import { loadDraft, saveDraft, clearDraft } from "@/lib/draft-storage";
 import aristotleImg from "@assets/generated_images/aristotle_engraving.webp";
 
@@ -256,26 +255,6 @@ export default function Home() {
   });
   const aiEnabled = !!aiStatus?.enabled;
 
-  const saveMutation = useMutation({
-    mutationFn: async () => {
-      if (!story.trim()) throw new Error("Story is required");
-      if (story.length > MAX_STORY_LENGTH) {
-        throw new Error(`Story must be ${MAX_STORY_LENGTH} characters or less`);
-      }
-      return apiRequest("POST", "/api/stories", { keywords, story });
-    },
-    onSuccess: () => {
-      toast({ title: "Story saved", description: "Your brand story has been saved." });
-    },
-    onError: (error: Error) => {
-      toast({
-        title: "Error",
-        description: error.message || "Failed to save your story. Please try again.",
-        variant: "destructive",
-      });
-    },
-  });
-
   const matchedKeywords = useMemo(() => {
     const storyLower = story.toLowerCase();
     return keywords.map((keyword, index) => {
@@ -350,7 +329,7 @@ export default function Home() {
         const res = await fetch("/api/suggest", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          credentials: "include",
+          credentials: "omit",
           body: JSON.stringify({ story, exclude: keywords.filter((k) => k.trim()) }),
           signal: controller.signal,
         });
@@ -628,7 +607,10 @@ export default function Home() {
         </div>
 
         {/* The Window — the workshop */}
-        <section id="workshop" className="scroll-mt-6 py-10 border-t border-border/60">
+        <section
+          id="workshop"
+          className="scroll-mt-6 my-4 rounded-2xl border border-primary/25 bg-gradient-to-b from-primary/[0.07] via-primary/[0.03] to-transparent px-4 py-10 sm:px-6 lg:px-8"
+        >
           <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
             <div>
               <Eyebrow>The window · Write the story</Eyebrow>
@@ -857,21 +839,6 @@ export default function Home() {
                 >
                   <Download className="w-4 h-4 mr-2" />
                   Export .txt
-                </Button>
-                <Button
-                  data-testid="button-save"
-                  variant="default"
-                  size="sm"
-                  onClick={() => saveMutation.mutate()}
-                  disabled={!story.trim() || saveMutation.isPending}
-                  className={
-                    isSuccess && !exampleLoaded
-                      ? "animate-pulse-glow ring-2 ring-success/70"
-                      : ""
-                  }
-                >
-                  <Save className="w-4 h-4 mr-2" />
-                  {saveMutation.isPending ? "Saving…" : "Save"}
                 </Button>
                 <Button
                   data-testid="button-reset"
@@ -1132,6 +1099,58 @@ export default function Home() {
             </div>
             <p className="mt-6 font-mono text-[11px] uppercase tracking-[0.14em] text-muted-foreground">
               + a shape — beginning · middle · end
+            </p>
+          </div>
+        </section>
+
+        {/* Privacy — trust by architecture, every claim verifiable in the code */}
+        <section
+          id="privacy"
+          data-testid="section-privacy"
+          className="py-12 border-t border-border/60"
+        >
+          <div className="max-w-2xl">
+            <Eyebrow>Trust · Private by architecture</Eyebrow>
+            <h2 className="font-display text-2xl sm:text-3xl font-bold mt-4 text-foreground">
+              Your words stay on your machine.
+            </h2>
+            <p className="mt-3 text-muted-foreground leading-relaxed">
+              A brand story is sensitive before it's public — a name you haven't registered, a
+              positioning you haven't announced. So this tool is built to hold nothing:
+            </p>
+            <ul className="mt-6 space-y-3">
+              {[
+                {
+                  k: "No cookies. No accounts. No analytics.",
+                  v: "Nothing to accept, nothing following you around afterward.",
+                },
+                {
+                  k: "Your draft lives in your browser.",
+                  v: "It's kept in your browser's own local storage so you can pick up where you left off. Clearing it is one click — Reset.",
+                },
+                {
+                  k: "The coach works entirely on this page.",
+                  v: "The Story Coach, the appeal meters, and \u201cFrom my story\u201d suggestions run in your browser. Your story never leaves it.",
+                },
+                {
+                  k: "\u201cRelated words\u201d reads your draft once, keeps nothing.",
+                  v: "If you switch to related-word suggestions, your draft passes through our server only to pick seed words for a free public dictionary (Datamuse). Nothing is written down — there is no database to write to.",
+                },
+                {
+                  k: "AI rewrite happens only when you ask.",
+                  v: "Only when you click it does your story travel to the AI model for one answer. We keep no copy along the way — not even in our server logs.",
+                },
+              ].map((row) => (
+                <li key={row.k} className="flex gap-3" data-testid={`text-privacy-${row.k.slice(0, 12)}`}>
+                  <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-primary" aria-hidden="true" />
+                  <p className="text-sm leading-relaxed text-muted-foreground">
+                    <span className="text-foreground font-medium">{row.k}</span> {row.v}
+                  </p>
+                </li>
+              ))}
+            </ul>
+            <p className="mt-6 font-mono text-[11px] uppercase tracking-[0.14em] text-muted-foreground">
+              nothing stored · nothing sold · nothing to leak
             </p>
           </div>
         </section>

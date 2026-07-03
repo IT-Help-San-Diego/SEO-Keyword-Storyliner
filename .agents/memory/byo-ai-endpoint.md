@@ -17,12 +17,10 @@ The user explicitly does NOT want a paid/managed AI dependency (declined Replit-
 - **Keyword suggestions default to client-side extraction from the user's own typed story** (`extractStoryKeywords` in `home.tsx`), not an API — the user found generic API words "horrible" and wanted suggestions grounded in their sentences. The Datamuse `/api/suggest` proxy is now only the opt-in "Related words" mode (its `useEffect` is gated to that mode). **Thesaurus** still uses the free **Datamuse API** (`api.datamuse.com`, no key, CORS ok, `ml=` synonyms).
 - **Celebration threshold = 4 woven-in keywords** (`REQUIRED_KEYWORDS`), chosen with the user: two anchors + two real supporting signals. **Why:** lower than the old 6 (which nudged toward keyword stuffing — contradicting the app's own anti-cheating message); 4 reads as natural and honest brands often only have a handful. Keep UI success copy number-agnostic so it doesn't drift if the threshold changes.
 
-# AI rewrite is intentionally surfaced as "Coming soon" (key out of credits)
+# AI rewrite is LIVE — and Gemini model names go stale
 
-The configured Google/Gemini key returns **429 "Your prepayment credits are depleted"**, so live AI rewrites fail. By user decision, the UI presents AI rewrite as **"Coming soon"** rather than a dead button — all AI code is left intact.
-- `story-coach-panel.tsx`: a "Coming soon" badge, the rewrite button is hard-disabled (`disabled`) and labeled "Coming soon", description says it's not available yet.
-- **Why:** end-users never supply their own key (it's a server-side secret going to the owner's Gemini endpoint); a visible-but-broken button is worse than an honest "soon".
-- **To re-enable when the key is funded:** remove the `disabled`/"Coming soon" badge in `story-coach-panel.tsx`. No backend change needed — the route/endpoint already work.
+AI rewrite is live and working (the earlier "Coming soon"/depleted-credits state is over; user re-funded the key).
+- **Pinned Gemini model names get retired** — `gemini-2.0-flash` started returning 404 "no longer available". Fix: `AI_MODEL=gemini-flash-lite-latest` (shared env var), Google's rolling alias for the current cheapest flash-lite tier. **Why:** the user's explicit goal is "the cheapest bot that still does the job," and an alias can't go stale. If AI breaks with a 404 again, first hit `{AI_BASE_URL}/models` to see what exists.
 - **The header no longer shows AI status or "free coach" at all** — the user found pricing/AI-status language cheapening for that prime top-strip space. See the brand-intellectual-resistance memory.
 
 # Guardrails on the proxy/AI routes
