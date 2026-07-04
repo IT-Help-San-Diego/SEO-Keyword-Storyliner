@@ -9,3 +9,4 @@
 - [Keyword/hashtag framing + anchors](keyword-hashtag-framing.md) — "same words, three homes" (search, hashtag, AI's answer); cited stats stay exact+sourced; two anchors independent.
 - [React/TS stack quirks](react-stack-quirks.md) — no `fetchpriority` img attr; wrap iterator spreads in `Array.from`; HMR "invalid hook call" warnings are transient.
 - [AI coach prompt doctrine](ai-coach-prompt.md) — weak models need recipes not principles: checklist + slot formula, anti-fabrication placeholders, category fidelity, temp 0.4 de-risk.
+- [Git history scrub ops](git-history-scrub.md) — agent can't write git refs (hard block); user runs rewrites in Shell; refs/original enables recovery; attached_assets ignored except generated_images.
